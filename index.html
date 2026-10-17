@@ -2,1253 +2,1264 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scam Spotter</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        html,
-        body {
-            height: 100%;
-        }
-
-        body {
-            margin: 0;
-            font-family: "Segoe UI", "Nirmala UI", system-ui, -apple-system, Arial, sans-serif;
-            font-weight: 400;
-            color: #4a3344;
-            line-height: 1.75;
-            background: linear-gradient(160deg, #fde8f1 0%, #f7e4f5 50%, #ece4fa 100%);
-            background-attachment: fixed;
-        }
-
-        .app {
-            width: 100%;
-            max-width: 880px;
-            height: 100vh;
-            height: 100dvh;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            padding: 0 24px;
-        }
-
-        .top {
-            padding: 22px 0 8px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .top b {
-            color: #b4466f;
-            font-size: 17px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .top span {
-            color: #a3829a;
-            font-size: 14px;
-            margin-left: 10px;
-        }
-
-        select {
-            padding: 8px 12px;
-            font-size: 14px;
-            font-family: inherit;
-            color: #7a4a66;
-            background: rgba(255, 255, 255, 0.5);
-            border: 1px solid #ecc6d9;
-            border-radius: 14px;
-            outline: none;
-        }
-
-        .stage {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px 0 28px;
-        }
-
-        .hero {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .hero h1 {
-            font-size: clamp(40px, 9vw, 84px);
-            font-weight: 600;
-            margin: 0;
-            color: #b4466f;
-            line-height: 1.15;
-        }
-
-        .word {
-            display: inline-block;
-            white-space: nowrap;
-        }
-
-        .hero h1 .letter {
-            display: inline-block;
-            opacity: 0;
-            animation: pop 0.5s ease forwards;
-        }
-
-        .tagline {
-            color: #a3829a;
-            font-size: 18px;
-            margin-top: 18px;
-        }
-
-        @keyframes pop {
-            0% {
-                opacity: 0;
-                transform: scale(0.2) translateY(30px);
-            }
-
-            70% {
-                opacity: 1;
-                transform: scale(1.2) translateY(-4px);
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        #results {
-            display: none;
-            padding-bottom: 12px;
-        }
-
-        #results>* {
-            opacity: 0;
-            animation: fadeUp 0.7s ease forwards;
-        }
-
-        #results>*:nth-child(1) {
-            animation-delay: 0.05s;
-        }
-
-        #results>*:nth-child(2) {
-            animation-delay: 0.20s;
-        }
-
-        #results>*:nth-child(3) {
-            animation-delay: 0.35s;
-        }
-
-        #results>*:nth-child(4) {
-            animation-delay: 0.50s;
-        }
-
-        #results>*:nth-child(5) {
-            animation-delay: 0.65s;
-        }
-
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(14px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .section {
-            margin-top: 34px;
-        }
-
-        h3 {
-            margin: 0 0 12px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: #a3829a;
-        }
-
-        .banner {
-            padding: 18px 20px;
-            border-radius: 16px;
-            text-align: center;
-            font-size: 22px;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-        }
-
-        .banner.high {
-            background: #fbdbe3;
-            color: #9f1d3d;
-        }
-
-        .banner.medium {
-            background: #fde8cf;
-            color: #94560a;
-        }
-
-        .banner.low {
-            background: #dcf1e4;
-            color: #1d6b3d;
-        }
-
-        #highlighted {
-            padding: 4px 0;
-            font-size: 17px;
-            line-height: 2;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-
-        mark {
-            border-radius: 6px;
-            padding: 2px 6px;
-            color: inherit;
-        }
-
-        .tablewrap {
-            overflow-x: auto;
-        }
-
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            font-size: 15px;
-        }
-
-        th {
-            text-align: left;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: #a3829a;
-            padding: 10px 14px 10px 0;
-            border-bottom: 1px solid #ebcfe0;
-        }
-
-        td {
-            text-align: left;
-            vertical-align: top;
-            padding: 16px 14px 16px 0;
-            border-bottom: 1px solid #f1dce8;
-            line-height: 1.8;
-        }
-
-        td:first-child {
-            font-weight: 600;
-            color: #6b3c58;
-        }
-
-        .listenrow {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-        }
-
-        .listenrow button {
-            padding: 8px 16px;
-            font-size: 14px;
-        }
-
-        #voiceNote {
-            font-size: 13px;
-            color: #b4466f;
-            margin: 0 0 12px;
-        }
-
-        #result p {
-            margin: 0 0 14px;
-        }
-
-        #steps ul {
-            margin: 0;
-            padding-left: 20px;
-        }
-
-        #steps li {
-            margin-bottom: 12px;
-        }
-
-        .bottom {
-            padding: 14px 0 18px;
-            border-top: 1px solid #f0d3e3;
-        }
-
-        .inputrow {
-            display: flex;
-            gap: 10px;
-            align-items: flex-end;
-        }
-
-        textarea {
-            flex: 1;
-            padding: 12px 16px;
-            font-size: 16px;
-            font-family: inherit;
-            color: #4a3344;
-            background: rgba(255, 255, 255, 0.35);
-            border: 1px solid #ecc6d9;
-            border-radius: 18px;
-            resize: none;
-            outline: none;
-        }
-
-        textarea:focus {
-            border-color: #d98aae;
-            background: rgba(255, 255, 255, 0.5);
-        }
-
-        textarea::placeholder {
-            color: #c2a0b4;
-        }
-
-        button {
-            padding: 11px 18px;
-            font-size: 15px;
-            font-family: inherit;
-            border: none;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.5);
-            color: #7a4a66;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        button:hover {
-            background: rgba(255, 255, 255, 0.8);
-        }
-
-        button.primary {
-            background: #c2507f;
-            color: white;
-            font-weight: 600;
-        }
-
-        button.primary:hover {
-            background: #a8406b;
-        }
-
-        .samples {
-            margin-top: 12px;
-            font-size: 14px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            align-items: center;
-            color: #a3829a;
-        }
-
-        .samples button {
-            padding: 6px 14px;
-            font-size: 13px;
-        }
-
-        .note {
-            margin: 12px 0 0;
-            font-size: 12px;
-            color: #b898aa;
-            text-align: center;
-            line-height: 1.6;
-        }
-
-        .topright {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .linkbtn {
-            padding: 8px 14px;
-            font-size: 14px;
-        }
-
-        .overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(74, 51, 68, 0.35);
-            align-items: center;
-            justify-content: center;
-            padding: 16px;
-            z-index: 10;
-        }
-
-        .overlay.open {
-            display: flex;
-        }
-
-        .panel {
-            position: relative;
-            width: 100%;
-            max-width: 760px;
-            max-height: 90vh;
-            overflow-y: auto;
-            background: linear-gradient(160deg, #fde8f1, #ece4fa);
-            border-radius: 22px;
-            padding: 28px;
-            color: #4a3344;
-        }
-
-        .panel h2 {
-            margin: 0 0 8px;
-            color: #b4466f;
-            font-weight: 600;
-        }
-
-        .lead {
-            margin-top: 0;
-        }
-
-        .closebtn {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            padding: 6px 12px;
-            font-size: 14px;
-        }
-
-        .plangrid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin: 20px 0;
-        }
-
-        .plan {
-            background: rgba(255, 255, 255, 0.55);
-            border-radius: 16px;
-            padding: 16px;
-        }
-
-        .plan h4 {
-            margin: 0 0 4px;
-            color: #6b3c58;
-        }
-
-        .plan p {
-            margin: 6px 0 0;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        .price {
-            color: #b4466f;
-            font-weight: 600;
-        }
-
-        .fine {
-            font-size: 12px;
-            color: #a3829a;
-        }
-
-
-        .top b {
-            white-space: nowrap;
-        }
-
-        @media (max-width: 600px) {
-            .app {
-                padding: 0 14px;
-            }
-
-            /* top bar */
-            .top {
-                padding: 12px 0 6px;
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .top span {
-                display: none;
-            }
-
-            .linkbtn {
-                padding: 7px 12px;
-                font-size: 13px;
-            }
-
-            select {
-                padding: 7px 10px;
-                font-size: 13px;
-            }
-
-            /* hero */
-            .hero h1 {
-                font-size: clamp(34px, 11vw, 48px);
-            }
-
-            .tagline {
-                font-size: 15px;
-                margin-top: 12px;
-            }
-
-            /* results */
-            .section {
-                margin-top: 24px;
-            }
-
-            .banner {
-                font-size: 18px;
-                padding: 14px;
-            }
-
-            #highlighted {
-                font-size: 16px;
-                line-height: 1.9;
-            }
-
-            /* table becomes cards */
-            table,
-            thead,
-            tbody,
-            tr,
-            td {
-                display: block;
-            }
-
-            thead {
-                display: none;
-            }
-
-            tr {
-                background: rgba(255, 255, 255, 0.45);
-                border-radius: 14px;
-                padding: 12px 14px;
-                margin-bottom: 10px;
-            }
-
-            td {
-                border: none;
-                padding: 3px 0;
-                font-size: 14px;
-                line-height: 1.6;
-            }
-
-            td:first-child {
-                font-size: 15px;
-                margin-bottom: 4px;
-            }
-
-            td[data-label]::before {
-                content: attr(data-label) ": ";
-                color: #a3829a;
-                font-size: 12px;
-                text-transform: uppercase;
-                letter-spacing: 0.5px;
-            }
-
-            /* compact bottom input area */
-            .bottom {
-                padding: 10px 0 12px;
-            }
-
-            .note,
-            .samples span {
-                display: none;
-            }
-
-            .samples {
-                margin-top: 8px;
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                padding-bottom: 2px;
-            }
-
-            .samples button {
-                flex: none;
-                white-space: nowrap;
-            }
-
-            .inputrow {
-                flex-wrap: wrap;
-            }
-
-            textarea {
-                flex: 1 1 100%;
-                min-height: 52px;
-                max-height: 90px;
-                padding: 10px 14px;
-            }
-
-            .inputrow button {
-                flex: 1;
-                padding: 10px;
-            }
-
-            /* institutions panel */
-            .panel {
-                padding: 22px 16px;
-            }
-
-            .panel h2 {
-                padding-right: 44px;
-                font-size: 20px;
-            }
-
-            .plangrid {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-
-
-            /* whole page scrolls on phones */
-            html,
-            body {
-                height: auto;
-            }
-
-            .app {
-                height: auto;
-                min-height: 100dvh;
-            }
-
-            .stage {
-                flex: none;
-                overflow: visible;
-            }
-
-            .hero {
-                height: auto;
-                min-height: 55dvh;
-            }
-
-            .bottom {
-                border-top: none;
-                padding: 16px 0 28px;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scam Spotter</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", "Nirmala UI", system-ui, -apple-system, Arial, sans-serif;
+      font-weight: 400;
+      color: #4a3344;
+      line-height: 1.75;
+      background: linear-gradient(160deg, #fde8f1 0%, #f7e4f5 50%, #ece4fa 100%);
+      background-attachment: fixed;
+    }
+
+    .app {
+      width: 100%;
+      max-width: 880px;
+      height: 100vh;
+      height: 100dvh;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      padding: 0 24px;
+    }
+
+    .top {
+      padding: 22px 0 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .top b {
+      color: #b4466f;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .top span {
+      color: #a3829a;
+      font-size: 14px;
+      margin-left: 10px;
+    }
+
+    select {
+      padding: 8px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: #7a4a66;
+      background: rgba(255, 255, 255, 0.5);
+      border: 1px solid #ecc6d9;
+      border-radius: 14px;
+      outline: none;
+    }
+
+    .stage {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 0 28px;
+    }
+
+    .hero {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(40px, 9vw, 84px);
+      font-weight: 600;
+      margin: 0;
+      color: #b4466f;
+      line-height: 1.15;
+    }
+
+    .word {
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .hero h1 .letter {
+      display: inline-block;
+      opacity: 0;
+      animation: pop 0.5s ease forwards;
+    }
+
+    .tagline {
+      color: #a3829a;
+      font-size: 18px;
+      margin-top: 18px;
+    }
+
+    @keyframes pop {
+      0% {
+        opacity: 0;
+        transform: scale(0.2) translateY(30px);
+      }
+
+      70% {
+        opacity: 1;
+        transform: scale(1.2) translateY(-4px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    #results {
+      display: none;
+      padding-bottom: 12px;
+    }
+
+    #results>* {
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    #results>*:nth-child(1) {
+      animation-delay: 0.05s;
+    }
+
+    #results>*:nth-child(2) {
+      animation-delay: 0.20s;
+    }
+
+    #results>*:nth-child(3) {
+      animation-delay: 0.35s;
+    }
+
+    #results>*:nth-child(4) {
+      animation-delay: 0.50s;
+    }
+
+    #results>*:nth-child(5) {
+      animation-delay: 0.65s;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section {
+      margin-top: 34px;
+    }
+
+    h3 {
+      margin: 0 0 12px;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #a3829a;
+    }
+
+    .banner {
+      padding: 18px 20px;
+      border-radius: 16px;
+      text-align: center;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .banner.high {
+      background: #fbdbe3;
+      color: #9f1d3d;
+    }
+
+    .banner.medium {
+      background: #fde8cf;
+      color: #94560a;
+    }
+
+    .banner.low {
+      background: #dcf1e4;
+      color: #1d6b3d;
+    }
+
+    #highlighted {
+      padding: 4px 0;
+      font-size: 17px;
+      line-height: 2;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    mark {
+      border-radius: 6px;
+      padding: 2px 6px;
+      color: inherit;
+    }
+
+    .tablewrap {
+      overflow-x: auto;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 15px;
+    }
+
+    th {
+      text-align: left;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      color: #a3829a;
+      padding: 10px 14px 10px 0;
+      border-bottom: 1px solid #ebcfe0;
+    }
+
+    td {
+      text-align: left;
+      vertical-align: top;
+      padding: 16px 14px 16px 0;
+      border-bottom: 1px solid #f1dce8;
+      line-height: 1.8;
+    }
+
+    td:first-child {
+      font-weight: 600;
+      color: #6b3c58;
+    }
+
+    .listenrow {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
+    }
+
+    .listenrow button {
+      padding: 8px 16px;
+      font-size: 14px;
+    }
+
+    #voiceNote {
+      font-size: 13px;
+      color: #b4466f;
+      margin: 0 0 12px;
+    }
+
+    #result p {
+      margin: 0 0 14px;
+    }
+
+    #steps ul {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    #steps li {
+      margin-bottom: 12px;
+    }
+
+    .bottom {
+      padding: 14px 0 18px;
+      border-top: 1px solid #f0d3e3;
+    }
+
+    .inputrow {
+      display: flex;
+      gap: 10px;
+      align-items: flex-end;
+    }
+
+    textarea {
+      flex: 1;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-family: inherit;
+      color: #4a3344;
+      background: rgba(255, 255, 255, 0.35);
+      border: 1px solid #ecc6d9;
+      border-radius: 18px;
+      resize: none;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #d98aae;
+      background: rgba(255, 255, 255, 0.5);
+    }
+
+    textarea::placeholder {
+      color: #c2a0b4;
+    }
+
+    button {
+      padding: 11px 18px;
+      font-size: 15px;
+      font-family: inherit;
+      border: none;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.5);
+      color: #7a4a66;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    button:hover {
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    button.primary {
+      background: #c2507f;
+      color: white;
+      font-weight: 600;
+    }
+
+    button.primary:hover {
+      background: #a8406b;
+    }
+
+    .samples {
+      margin-top: 12px;
+      font-size: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+      color: #a3829a;
+    }
+
+    .samples button {
+      padding: 6px 14px;
+      font-size: 13px;
+    }
+
+    .note {
+      margin: 12px 0 0;
+      font-size: 12px;
+      color: #b898aa;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    .topright {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .linkbtn {
+      padding: 8px 14px;
+      font-size: 14px;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(74, 51, 68, 0.35);
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 10;
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .panel {
+      position: relative;
+      width: 100%;
+      max-width: 760px;
+      max-height: 90vh;
+      overflow-y: auto;
+      background: linear-gradient(160deg, #fde8f1, #ece4fa);
+      border-radius: 22px;
+      padding: 28px;
+      color: #4a3344;
+    }
+
+    .panel h2 {
+      margin: 0 0 8px;
+      color: #b4466f;
+      font-weight: 600;
+    }
+
+    .lead {
+      margin-top: 0;
+    }
+
+    .closebtn {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      padding: 6px 12px;
+      font-size: 14px;
+    }
+
+    .plangrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin: 20px 0;
+    }
+
+    .plan {
+      background: rgba(255, 255, 255, 0.55);
+      border-radius: 16px;
+      padding: 16px;
+    }
+
+    .plan h4 {
+      margin: 0 0 4px;
+      color: #6b3c58;
+    }
+
+    .plan p {
+      margin: 6px 0 0;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .price {
+      color: #b4466f;
+      font-weight: 600;
+    }
+
+    .fine {
+      font-size: 12px;
+      color: #a3829a;
+    }
+
+
+    .top b {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 600px) {
+      .app {
+        padding: 0 14px;
+      }
+
+      /* top bar */
+      .top {
+        padding: 12px 0 6px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .top span {
+        display: none;
+      }
+
+      .linkbtn {
+        padding: 7px 12px;
+        font-size: 13px;
+      }
+
+      select {
+        padding: 7px 10px;
+        font-size: 13px;
+      }
+
+      /* hero */
+      .hero h1 {
+        font-size: clamp(34px, 11vw, 48px);
+      }
+
+      .tagline {
+        font-size: 15px;
+        margin-top: 12px;
+      }
+
+      /* results */
+      .section {
+        margin-top: 24px;
+      }
+
+      .banner {
+        font-size: 18px;
+        padding: 14px;
+      }
+
+      #highlighted {
+        font-size: 16px;
+        line-height: 1.9;
+      }
+
+      /* table becomes cards */
+      table,
+      thead,
+      tbody,
+      tr,
+      td {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        background: rgba(255, 255, 255, 0.45);
+        border-radius: 14px;
+        padding: 12px 14px;
+        margin-bottom: 10px;
+      }
+
+      td {
+        border: none;
+        padding: 3px 0;
+        font-size: 14px;
+        line-height: 1.6;
+      }
+
+      td:first-child {
+        font-size: 15px;
+        margin-bottom: 4px;
+      }
+
+      td[data-label]::before {
+        content: attr(data-label) ": ";
+        color: #a3829a;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      /* compact bottom input area */
+      .bottom {
+        padding: 10px 0 12px;
+      }
+
+      .note,
+      .samples span {
+        display: none;
+      }
+
+      .samples {
+        margin-top: 8px;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 2px;
+      }
+
+      .samples button {
+        flex: none;
+        white-space: nowrap;
+      }
+
+      .inputrow {
+        flex-wrap: wrap;
+      }
+
+      textarea {
+        flex: 1 1 100%;
+        min-height: 52px;
+        max-height: 90px;
+        padding: 10px 14px;
+      }
+
+      .inputrow button {
+        flex: 1;
+        padding: 10px;
+      }
+
+      /* institutions panel */
+      .panel {
+        padding: 22px 16px;
+      }
+
+      .panel h2 {
+        padding-right: 44px;
+        font-size: 20px;
+      }
+
+      .plangrid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+
+      /* whole page scrolls on phones */
+      html,
+      body {
+        height: auto;
+      }
+
+      .app {
+        height: auto;
+        min-height: 100dvh;
+      }
+
+      .stage {
+        flex: none;
+        overflow: visible;
+      }
+
+      .hero {
+        height: auto;
+        min-height: 55dvh;
+      }
+
+      .bottom {
+        border-top: none;
+        padding: 16px 0 28px;
+      }
+
+      .hero {
+        min-height: 50dvh;
+        padding-bottom: 32px;
+      }
+
+      .bottom {
+        margin-top: 24px;
+        padding: 24px 0 28px;
+        border-top: none;
+      }
+    }
+  </style>
 </head>
 
 <body>
-    <div class="app">
+  <div class="app">
 
-        <div class="top">
-            <div><b>Scam Spotter</b><span>Paste a suspicious message</span></div>
-            <div class="topright">
-                <button class="linkbtn" onclick="openPlans()">For Institutions</button>
-                <select id="lang" onchange="changeLang()">
-                    <option value="en">English</option>
-                    <option value="hi">हिन्दी</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="stage" id="stage">
-            <div class="hero" id="hero">
-                <h1 id="welcome" aria-label="Welcome to Scam Spotter"></h1>
-                <p class="tagline">Paste a suspicious message. See the warning signs.</p>
-            </div>
-
-            <div id="results">
-                <div id="banner" class="banner"></div>
-
-                <div class="section">
-                    <h3 data-i18n="msgTitle"></h3>
-                    <div id="highlighted"></div>
-                </div>
-
-                <div class="section">
-                    <h3 data-i18n="foundTitle"></h3>
-                    <div class="tablewrap">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th data-i18n="thSign"></th>
-                                    <th data-i18n="thFound"></th>
-                                    <th data-i18n="thWhy"></th>
-                                    <th data-i18n="thRisk"></th>
-                                    <th data-i18n="thPoints"></th>
-                                </tr>
-                            </thead>
-                            <tbody id="tableBody"></tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="section">
-                    <h3 data-i18n="explTitle"></h3>
-                    <div class="listenrow">
-                        <button onclick="speak()" data-i18n="listen"></button>
-                        <button onclick="stopSpeak()" data-i18n="stop"></button>
-                    </div>
-                    <p id="voiceNote"></p>
-                    <div id="result"></div>
-                </div>
-
-                <div class="section">
-                    <h3 data-i18n="nextTitle"></h3>
-                    <div id="steps"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="bottom">
-            <div class="inputrow">
-                <textarea id="msg" rows="2" placeholder="Paste a suspicious message here..."></textarea>
-                <button class="primary" onclick="analyze()">Analyze</button>
-                <button onclick="clearAll()">Clear</button>
-            </div>
-            <div class="samples">
-                <span>Try a sample:</span>
-                <button onclick="loadSample(0)">SBI KYC scam</button>
-                <button onclick="loadSample(1)">Real OTP notice</button>
-                <button onclick="loadSample(2)">Delivery update</button>
-            </div>
-            <p class="note">Rule-based checker, not a guarantee. If you have been scammed, call 1930 or visit
-                cybercrime.gov.in (India).</p>
-        </div>
-
-    </div>
-    <div id="plans" class="overlay" onclick="closePlans()">
-        <div class="panel" onclick="event.stopPropagation()">
-            <button class="closebtn" onclick="closePlans()">✕</button>
-            <h2>Scam Spotter for Institutions</h2>
-            <p class="lead"><b>Free for individuals.</b> Colleges, banks and NGOs pay a yearly license to protect their
-                people.</p>
-
-            <div class="plangrid">
-                <div class="plan">
-                    <h4>Campus Plan</h4>
-                    <p class="price">about ₹20,000 / year</p>
-                    <p>For colleges. Your branding, custom rules for fake fee, scholarship and internship scams, and a
-                        scam-trend
-                        dashboard.</p>
-                </div>
-                <div class="plan">
-                    <h4>Bank Plan</h4>
-                    <p class="price">per customer base</p>
-                    <p>For banks and cooperatives. An embedded widget, brand rules such as "Our bank never asks for an
-                        OTP", and
-                        regional languages.</p>
-                </div>
-                <div class="plan">
-                    <h4>Community Plan</h4>
-                    <p class="price">discounted</p>
-                    <p>For NGOs and local bodies. Regional language packs to protect elders and rural families.</p>
-                </div>
-            </div>
-
-            <p><b>Why they pay:</b> one fraud case costs a bank more in refunds, complaints and lost trust than a yearly
-                license.</p>
-            <p><b>Go-to-market:</b> 5 local colleges, then cooperative banks, then NGOs.</p>
-            <p class="fine">Prices are illustrative. This is a preview of the institution offering, not a checkout.</p>
-        </div>
+    <div class="top">
+      <div><b>Scam Spotter</b><span>Paste a suspicious message</span></div>
+      <div class="topright">
+        <button class="linkbtn" onclick="openPlans()">For Institutions</button>
+        <select id="lang" onchange="changeLang()">
+          <option value="en">English</option>
+          <option value="hi">हिन्दी</option>
+        </select>
+      </div>
     </div>
 
-    <script>
-        //  Pop-in heading 
-        function playHero() {
-            const heading = document.getElementById('welcome');
-            heading.innerHTML = '';
-            const words = 'Welcome to Scam Spotter'.split(' ');
-            let count = 0;
-            words.forEach(function (word) {
-                const wordSpan = document.createElement('span');
-                wordSpan.className = 'word';
-                word.split('').forEach(function (letter) {
-                    const span = document.createElement('span');
-                    span.className = 'letter';
-                    span.textContent = letter;
-                    span.style.animationDelay = (count * 0.06) + 's';
-                    wordSpan.appendChild(span);
-                    count++;
-                });
+    <div class="stage" id="stage">
+      <div class="hero" id="hero">
+        <h1 id="welcome" aria-label="Welcome to Scam Spotter"></h1>
+        <p class="tagline">Paste a suspicious message. See the warning signs.</p>
+      </div>
 
+      <div id="results">
+        <div id="banner" class="banner"></div>
 
-                heading.appendChild(wordSpan);
-                heading.appendChild(document.createTextNode(' '));
-            });
-        }
-        playHero();
+        <div class="section">
+          <h3 data-i18n="msgTitle"></h3>
+          <div id="highlighted"></div>
+        </div>
 
-        //  Words for the screen, in two languages 
-        const ui = {
-            en: {
-                msgTitle: 'Your message, with warning signs marked',
-                foundTitle: 'What we found',
-                explTitle: 'Explanation',
-                nextTitle: 'What to do next',
-                thSign: 'Warning sign',
-                thFound: 'Found in message',
-                thWhy: 'Why it matters',
-                thRisk: 'Risk',
-                thPoints: 'Points',
-                listen: 'Listen',
-                stop: 'Stop',
-                levels: { high: 'HIGH', medium: 'MEDIUM', low: 'LOW' },
-                riskLabels: { high: 'High', medium: 'Medium', low: 'Low' },
-                riskWord: 'RISK',
-                noneTable: 'No warning signs found.',
-                noneStep: 'No warning signs found. If you are still unsure, check with the sender through their official website or app.',
-                extraStep: 'If you already shared an OTP or paid, contact your bank straight away. Report scams at cybercrime.gov.in or call 1930 (India).',
-                noVoice: ''
-            },
-            hi: {
-                msgTitle: 'आपका संदेश, चेतावनी संकेतों के साथ',
-                foundTitle: 'हमें क्या मिला',
-                explTitle: 'स्पष्टीकरण',
-                nextTitle: 'आगे क्या करें',
-                thSign: 'चेतावनी संकेत',
-                thFound: 'संदेश में मिला',
-                thWhy: 'यह क्यों मायने रखता है',
-                thRisk: 'जोखिम',
-                thPoints: 'अंक',
-                listen: 'सुनें',
-                stop: 'रोकें',
-                levels: { high: 'उच्च', medium: 'मध्यम', low: 'कम' },
-                riskLabels: { high: 'उच्च', medium: 'मध्यम', low: 'कम' },
-                riskWord: 'जोखिम',
-                noneTable: 'कोई चेतावनी संकेत नहीं मिला।',
-                noneStep: 'कोई चेतावनी संकेत नहीं मिला। फिर भी शक हो तो भेजने वाले से उनकी आधिकारिक वेबसाइट या ऐप के ज़रिए पुष्टि करें।',
-                extraStep: 'अगर आपने OTP साझा कर दिया है या पैसे भेज दिए हैं, तो तुरंत अपने बैंक से संपर्क करें। ठगी की शिकायत cybercrime.gov.in पर करें या 1930 पर कॉल करें (भारत)।',
-                noVoice: 'इस डिवाइस पर हिंदी आवाज़ उपलब्ध नहीं है। कृपया टेक्स्ट पढ़ें।'
-            }
-        };
+        <div class="section">
+          <h3 data-i18n="foundTitle"></h3>
+          <div class="tablewrap">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="thSign"></th>
+                  <th data-i18n="thFound"></th>
+                  <th data-i18n="thWhy"></th>
+                  <th data-i18n="thRisk"></th>
+                  <th data-i18n="thPoints"></th>
+                </tr>
+              </thead>
+              <tbody id="tableBody"></tbody>
+            </table>
+          </div>
+        </div>
 
-        //  Rules (each rule has English and Hindi words) 
-        const rules = [
-            {
-                name: { en: 'Fake Urgency', hi: 'झूठी जल्दबाज़ी' }, pattern: /by today|expires? today|blocked today|today only|before today|urgent|immediate|asap|within 24 hours|emergency|act now|right now|right away|turant|foran|jaldi|aaj hi|तुरंत|फौरन|आज ही/i,
-                points: 20,
-                why: {
-                    en: 'Pressure can make people act without thinking.',
-                    hi: 'जल्दबाज़ी का दबाव लोगों को बिना सोचे काम करने पर मजबूर कर देता है।'
-                },
-                step: {
-                    en: 'Take a breath. Real banks give you time, so do not act in a hurry.',
-                    hi: 'गहरी सांस लें। असली बैंक आपको समय देते हैं, इसलिए जल्दबाज़ी में कोई कदम न उठाएं।'
-                }
-            },
-            {
-                name: { en: 'Account Threats', hi: 'खाता बंद करने की धमकी' },
-                pattern: /kyc.{0,30}(incomplete|pending|expired)|will be (blocked|suspended|closed|terminated)|khata\s+(band|block)|account\s+(band|block)\s+ho|kyc\s+adhura|खाता\s+(बंद|ब्लॉक)/i,
-                points: 15,
-                why: {
-                    en: 'Scammers often threaten to block or suspend accounts to create fear.',
-                    hi: 'ठग अक्सर खाता बंद या ब्लॉक करने की धमकी देकर डर पैदा करते हैं।'
-                },
-                step: {
-                    en: "Open your bank's official app or call the number on your card to check your account.",
-                    hi: 'अपने बैंक के आधिकारिक ऐप में जाकर या अपने कार्ड पर छपे नंबर पर कॉल करके अपना खाता जांचें।'
-                }
-            },
-            {
-                name: { en: 'Suspicious Links', hi: 'संदिग्ध लिंक' },
-                pattern: /https?:\/\/\S+/i,
-                points: 25,
-                why: {
-                    en: 'Scammers often use links to phishing sites or to download malware.',
-                    hi: 'ठग अक्सर नकली वेबसाइट या वायरस वाले लिंक भेजते हैं।'
-                },
-                step: {
-                    en: 'Do not click the link.',
-                    hi: 'लिंक पर क्लिक न करें।'
-                }
-            },
-            {
-                name: { en: 'OTP request', hi: 'OTP की मांग' },
-                pattern: /(?<!not\s)(?<!n't\s)(?<!never\s)(share|send|tell|give|provide)\s+(me\s+|us\s+)?(the\s+|your\s+)?otp|otp\s+(bhejo|bhejiye|batao|dijiye|भेजो|बताओ)|(bhejo|batao|dijiye)\s+(apna\s+)?otp|ओटीपी\s+(भेजो|बताओ|दीजिए)/i,
-                points: 40,
-                why: {
-                    en: 'A bank never asks for an OTP.',
-                    hi: 'बैंक कभी भी आपसे OTP नहीं मांगता।'
-                },
-                step: {
-                    en: 'Never share your OTP with anyone.',
-                    hi: 'अपना OTP किसी के साथ साझा न करें।'
-                }
-            },
-            {
-                name: { en: 'Shortened link', hi: 'छोटा (शॉर्ट) लिंक' },
-                pattern: /\b(?:bit\.ly|tinyurl\.com|t\.co|goo\.gl|cutt\.ly|is\.gd|rb\.gy|shorturl\.at|ow\.ly)\/\S+/i,
-                points: 20,
-                why: {
-                    en: 'Short links hide the real website address.',
-                    hi: 'छोटे लिंक असली वेबसाइट का पता छिपा देते हैं।'
-                },
-                step: {
-                    en: 'Do not click it. Open the official app or website yourself.',
-                    hi: 'इस पर क्लिक न करें। आधिकारिक ऐप या वेबसाइट खुद खोलें।'
-                }
-            },
-            {
-                name: { en: 'Lookalike bank link', hi: 'बैंक जैसा दिखने वाला नकली लिंक' },
-                pattern: /https?:\/\/[^\s\/]*(?:(?:sbi|hdfc|icici|axis|pnb|paytm|phonepe|esewa|khalti)[^\s\/]*-|-[^\s\/]*(?:sbi|hdfc|icici|axis|pnb|paytm|phonepe|esewa|khalti))[^\s\/]*/i,
-                points: 30,
-                why: {
-                    en: "The link uses a bank's name but is not the bank's official website.",
-                    hi: 'लिंक में बैंक का नाम है, लेकिन यह बैंक की आधिकारिक वेबसाइट नहीं है।'
-                },
-                step: {
-                    en: "Type the bank's website yourself or use its official app.",
-                    hi: 'बैंक की वेबसाइट खुद टाइप करें या उसका आधिकारिक ऐप इस्तेमाल करें।'
-                }
-            },
-            {
-                name: { en: 'Insecure link (http)', hi: 'असुरक्षित लिंक (http)' },
-                pattern: /http:\/\/\S+/i,
-                points: 10,
-                why: {
-                    en: 'The link does not use https, so it is not secure.',
-                    hi: 'लिंक में https नहीं है, इसलिए यह सुरक्षित नहीं है।'
-                },
-                step: {
-                    en: 'Do not open links that start with http.',
-                    hi: 'http से शुरू होने वाले लिंक न खोलें।'
-                }
-            },
-            {
-                name: { en: 'Arrest or police threat', hi: 'गिरफ्तारी या पुलिस की धमकी' },
-                pattern: /digital\s+arrest|(you\s+are|you're)\s+(under|being)\s+arrest|arrest\s+warrant|\bcbi\b|narcotics|money\s+laundering|giraftar|डिजिटल\s+अरेस्ट|गिरफ्तार/i,
-                points: 40,
-                why: {
-                    en: 'Police and courts never arrest people over a phone or video call. "Digital arrest" is a scam.',
-                    hi: 'पुलिस या अदालत फ़ोन या वीडियो कॉल पर गिरफ्तारी नहीं करती। "डिजिटल अरेस्ट" एक ठगी है।'
-                },
-                step: {
-                    en: 'Hang up. Call 1930 and tell someone you trust.',
-                    hi: 'कॉल काट दें। 1930 पर कॉल करें और किसी भरोसेमंद व्यक्ति को बताएं।'
-                }
-            },
-            {
-                name: { en: 'Secrecy demand', hi: 'किसी को न बताने का दबाव' },
-                pattern: /(don['’]?t|do\s+not|never)\s+(tell|inform)\s+(anyone|anybody|your\s+family|the\s+police|your\s+bank)(?!\s+(?:your\s+|the\s+)?(?:otp|pin|password|cvv))|keep\s+(this|it)\s+(a\s+)?(secret|confidential)|kisi\s+ko\s+(mat|na)\s+batana|किसी\s+को\s+(मत|न)\s+बताना/i,
-                points: 25,
-                why: {
-                    en: 'Scammers isolate you so that nobody can warn you.',
-                    hi: 'ठग आपको अकेला कर देते हैं ताकि कोई आपको सावधान न कर सके।'
-                },
-                step: {
-                    en: 'Talk to family or a friend before you do anything.',
-                    hi: 'कुछ भी करने से पहले परिवार या दोस्त से बात करें।'
-                }
-            },
-            {
-                name: { en: 'Money demand', hi: 'पैसे भेजने की मांग' },
-                pattern: /transfer\s+(the\s+|your\s+)?(money|amount|funds)|send\s+(the\s+)?(money|amount)|pay\s+(a\s+|the\s+)?(fine|penalty)|paise\s+(bhejo|transfer)|paisa\s+bhejo|पैसे\s+(भेजो|ट्रांसफर)/i,
-                points: 30,
-                why: {
-                    en: 'Real officials and banks never ask you to transfer money to a "safe" account or pay a fine on a call.',
-                    hi: 'असली अधिकारी या बैंक कॉल पर कभी "सुरक्षित" खाते में पैसे भेजने या जुर्माना भरने को नहीं कहते।'
-                },
-                step: {
-                    en: 'Do not send any money.',
-                    hi: 'कोई पैसा न भेजें।'
-                }
-            },
-            {
-                name: { en: 'Prize or lottery claim', hi: 'इनाम या लॉटरी का दावा' },
-                pattern: /you\s+(have\s+)?won\b(?!['’]t)|you\s+are\s+(a\s+)?winner|congratulations.{0,40}(won|prize|lottery)|lucky\s+draw|lottery|claim\s+(your\s+)?(prize|reward|gift)|prize\s+money|inaam|jeet\s+gaye|इनाम|लॉटरी|जीत\s+गए/i,
-                points: 30,
-                why: {
-                    en: 'Scammers say you won a prize so that you pay a "fee" or share your details. You cannot win a contest you never entered.',
-                    hi: 'ठग इनाम का लालच देकर "फीस" मांगते हैं या आपकी जानकारी लेते हैं। जिस प्रतियोगिता में आपने हिस्सा ही नहीं लिया, उसमें आप जीत नहीं सकते।'
-                },
-                step: {
-                    en: 'Do not pay any fee and do not share your details to claim a prize.',
-                    hi: 'इनाम पाने के लिए कोई फीस न दें और अपनी जानकारी साझा न करें।'
-                }
-            }
-        ];
+        <div class="section">
+          <h3 data-i18n="explTitle"></h3>
+          <div class="listenrow">
+            <button onclick="speak()" data-i18n="listen"></button>
+            <button onclick="stopSpeak()" data-i18n="stop"></button>
+          </div>
+          <p id="voiceNote"></p>
+          <div id="result"></div>
+        </div>
 
-        //  Samples
-        const samples = [
-            'SBI ALERT: Your KYC is incomplete and your account will be blocked today. Update immediately at http://sbi-kyc-update.example/verify and share the OTP you receive to confirm.',
-            'Your OTP is 4821. Do not share it with anyone.',
-            'Your order #1234 has been shipped and will arrive tomorrow. Track it in the official app.'
-        ];
+        <div class="section">
+          <h3 data-i18n="nextTitle"></h3>
+          <div id="steps"></div>
+        </div>
+      </div>
+    </div>
 
-        function loadSample(n) {
-            document.getElementById('msg').value = samples[n];
-            analyze();
-        }
+    <div class="bottom">
+      <div class="inputrow">
+        <textarea id="msg" rows="2" placeholder="Paste a suspicious message here..."></textarea>
+        <button class="primary" onclick="analyze()">Analyze</button>
+        <button onclick="clearAll()">Clear</button>
+      </div>
+      <div class="samples">
+        <span>Try a sample:</span>
+        <button onclick="loadSample(0)">SBI KYC scam</button>
+        <button onclick="loadSample(1)">Real OTP notice</button>
+        <button onclick="loadSample(2)">Delivery update</button>
+      </div>
+      <p class="note">Rule-based checker, not a guarantee. If you have been scammed, call 1930 or visit
+        cybercrime.gov.in (India).</p>
+    </div>
 
-        function makeSafe(text) {
-            return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-        }
+  </div>
+  <div id="plans" class="overlay" onclick="closePlans()">
+    <div class="panel" onclick="event.stopPropagation()">
+      <button class="closebtn" onclick="closePlans()">✕</button>
+      <h2>Scam Spotter for Institutions</h2>
+      <p class="lead"><b>Free for individuals.</b> Colleges, banks and NGOs pay a yearly license to protect their
+        people.</p>
 
-        //  Memory: what the last Analyze found 
-        let lastFound = [];
-        let lastScore = 0;
-        let lastRaw = 0;
-        let lastLevel = 'low';
-        let hasResult = false;
+      <div class="plangrid">
+        <div class="plan">
+          <h4>Campus Plan</h4>
+          <p class="price">about ₹20,000 / year</p>
+          <p>For colleges. Your branding, custom rules for fake fee, scholarship and internship scams, and a
+            scam-trend
+            dashboard.</p>
+        </div>
+        <div class="plan">
+          <h4>Bank Plan</h4>
+          <p class="price">per customer base</p>
+          <p>For banks and cooperatives. An embedded widget, brand rules such as "Our bank never asks for an
+            OTP", and
+            regional languages.</p>
+        </div>
+        <div class="plan">
+          <h4>Community Plan</h4>
+          <p class="price">discounted</p>
+          <p>For NGOs and local bodies. Regional language packs to protect elders and rural families.</p>
+        </div>
+      </div>
 
-        function getLang() {
-            return document.getElementById('lang').value;
-        }
+      <p><b>Why they pay:</b> one fraud case costs a bank more in refunds, complaints and lost trust than a yearly
+        license.</p>
+      <p><b>Go-to-market:</b> 5 local colleges, then cooperative banks, then NGOs.</p>
+      <p class="fine">Prices are illustrative. This is a preview of the institution offering, not a checkout.</p>
+    </div>
+  </div>
 
-        // Writes the screen words in the chosen language
-        function applyUi() {
-            const t = ui[getLang()];
-            document.querySelectorAll('[data-i18n]').forEach(function (el) {
-                el.textContent = t[el.getAttribute('data-i18n')];
-            });
-            document.documentElement.lang = getLang();
-        }
-
-        function changeLang() {
-            stopSpeak();
-            applyUi();
-            if (hasResult) {
-                showExplanation();
-            }
-        }
-
-        //  Shows banner, table, explanation and steps in the chosen language 
-        function showExplanation() {
-            const lang = getLang();
-            const t = ui[lang];
-
-            const banner = document.getElementById('banner');
-            let note = '';
-            if (lastRaw > 100) {
-                note = (lang === 'hi') ? ' (कुल ' + lastRaw + ', अधिकतम 100)' : ' (total ' + lastRaw + ', capped at 100)';
-            }
-            banner.textContent = lastScore + ' / 100 = ' + t.levels[lastLevel] + ' ' + t.riskWord + note;
-            banner.className = 'banner ' + lastLevel;
-
-            let rows = '';
-            let html = '';
-            let stepsHtml = '';
-
-            lastFound.forEach(function (item) {
-                const words = item.words.map(function (w) {
-                    return '<mark style="background:' + item.color + '">' + makeSafe(w) + '</mark>';
-                }).join(' ');
-
-                rows += '<tr>' +
-                    '<td>' + item.rule.name[lang] + '</td>' +
-                    '<td>' + words + '</td>' +
-                    '<td>' + item.rule.why[lang] + '</td>' +
-                    '<td>' + t.riskLabels[item.risk] + '</td>' +
-                    '<td>+' + item.rule.points + '</td>' +
-                    '</tr>'; rows += '<tr>' +
-                        '<td>' + item.rule.name[lang] + '</td>' +
-                        '<td data-label="' + t.thFound + '">' + words + '</td>' +
-                        '<td>' + item.rule.why[lang] + '</td>' +
-                        '<td data-label="' + t.thRisk + '">' + t.riskLabels[item.risk] + '</td>' +
-                        '<td data-label="' + t.thPoints + '">+' + item.rule.points + '</td>' +
-                        '</tr>';
-
-                html += '<p><b>' + item.rule.name[lang] + '</b> (+' + item.rule.points + ')<br>' + item.rule.why[lang] + '</p>';
-                stepsHtml += '<li>' + item.rule.step[lang] + '</li>';
-            });
-
-            if (rows === '') { rows = '<tr><td colspan="5">' + t.noneTable + '</td></tr>'; }
-            if (html === '') { html = '<p>' + t.noneTable + '</p>'; }
-            if (lastScore >= 30) { stepsHtml += '<li>' + t.extraStep + '</li>'; }
-            if (stepsHtml === '') { stepsHtml = '<li>' + t.noneStep + '</li>'; }
-
-            document.getElementById('tableBody').innerHTML = rows;
-            document.getElementById('result').innerHTML = html;
-            document.getElementById('steps').innerHTML = '<ul>' + stepsHtml + '</ul>';
-            document.getElementById('voiceNote').textContent = '';
-        }
-
-        //  Audio 
-        function buildSpeech() {
-            const lang = getLang();
-            const t = ui[lang];
-            let parts = [];
-
-            if (lang === 'hi') {
-                parts.push('जोखिम स्तर ' + t.levels[lastLevel] + '। स्कोर 100 में से ' + lastScore + '।');
-            } else {
-                parts.push('Risk level ' + t.levels[lastLevel] + '. Score ' + lastScore + ' out of 100.');
-            }
-
-            if (lastFound.length === 0) {
-                parts.push(t.noneStep);
-            } else {
-                lastFound.forEach(function (item) {
-                    parts.push(item.rule.name[lang] + '. ' + item.rule.why[lang]);
-                });
-                parts.push(lang === 'hi' ? 'आगे क्या करें।' : 'What to do next.');
-                lastFound.forEach(function (item) {
-                    parts.push(item.rule.step[lang]);
-                });
-                if (lastScore >= 30) { parts.push(t.extraStep); }
-            }
-            return parts.join(' ');
-        }
-
-        function speak() {
-            if (!('speechSynthesis' in window)) {
-                alert('Audio is not supported in this browser.');
-                return;
-            }
-            if (!hasResult) { return; }
-
-            window.speechSynthesis.cancel();
-            const lang = getLang();
-            const utter = new SpeechSynthesisUtterance(buildSpeech());
-            utter.lang = (lang === 'hi') ? 'hi-IN' : 'en-IN';
-            utter.rate = 0.9;
-
-            const voices = window.speechSynthesis.getVoices();
-            const wanted = (lang === 'hi') ? 'hi' : 'en';
-            const voice = voices.find(function (v) {
-                return v.lang.toLowerCase().indexOf(wanted) === 0;
-            });
-
-            if (voice) {
-                utter.voice = voice;
-                document.getElementById('voiceNote').textContent = '';
-            } else if (lang === 'hi') {
-                document.getElementById('voiceNote').textContent = ui.hi.noVoice;
-            }
-
-            window.speechSynthesis.speak(utter);
-        }
-
-        function stopSpeak() {
-            if ('speechSynthesis' in window) {
-                window.speechSynthesis.cancel();
-            }
-        }
-
-        //  Clear 
-        function clearAll() {
-            stopSpeak();
-            hasResult = false;
-            document.getElementById('msg').value = '';
-            document.getElementById('results').style.display = 'none';
-            document.getElementById('hero').style.display = 'flex';
-            playHero();
-        }
-        //  Analyze
-        function analyze() {
-            const text = document.getElementById('msg').value;
-            if (text.trim() === '') {
-                alert('Please paste a message first.');
-                return;
-            }
-
-            stopSpeak();
-            document.getElementById('hero').style.display = 'none';
-
-            let score = 0;
-            lastFound = [];
-            const ranges = [];
-
-            for (const rule of rules) {
-                const everywhere = new RegExp(rule.pattern.source, 'gi');
-                const matches = Array.from(text.matchAll(everywhere));
-                if (matches.length === 0) { continue; }
-
-                score += rule.points;
-
-                let color = '#fdf0a6';
-                let risk = 'low';
-                if (rule.points >= 40) {
-                    color = '#fbb6c4';
-                    risk = 'high';
-                } else if (rule.points >= 25) {
-                    color = '#fdd9a8';
-                    risk = 'medium';
-                }
-
-                lastFound.push({
-                    rule: rule,
-                    color: color,
-                    risk: risk,
-                    words: matches.map(function (m) { return m[0]; })
-                });
-
-                matches.forEach(function (m) {
-                    ranges.push({ start: m.index, end: m.index + m[0].length, color: color, points: rule.points });
-                });
-            }
-
-            // When two matches overlap, keep the longer one (then the stronger rule)
-            ranges.sort(function (a, b) {
-                return ((b.end - b.start) - (a.end - a.start)) || (b.points - a.points);
-            });
-            const chosen = [];
-            ranges.forEach(function (r) {
-                const overlaps = chosen.some(function (c) { return r.start < c.end && r.end > c.start; });
-                if (!overlaps) { chosen.push(r); }
-            });
-            chosen.sort(function (a, b) { return a.start - b.start; });
-
-            // Build the highlighted message from left to right
-            let marked = '';
-            let pos = 0;
-            chosen.forEach(function (r) {
-                marked += makeSafe(text.slice(pos, r.start));
-                marked += '<mark style="background:' + r.color + '">' + makeSafe(text.slice(r.start, r.end)) + '</mark>';
-                pos = r.end;
-            });
-            marked += makeSafe(text.slice(pos));
-            lastRaw = score;
-            if (score > 100) { score = 100; }
-
-            let level = 'low';
-            if (score >= 60) {
-                level = 'high';
-            } else if (score >= 30) {
-                level = 'medium';
-            }
-
-            lastScore = score;
-            lastLevel = level;
-            hasResult = true;
-
-            document.getElementById('highlighted').innerHTML = marked;
-            applyUi();
-            showExplanation();
-
-            // Restart the fade-in every time
-            const results = document.getElementById('results');
-            results.style.display = 'none';
-            void results.offsetWidth;
-            results.style.display = 'block';
-
-            if (window.innerWidth <= 600) {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            } else {
-                document.getElementById('stage').scrollTop = 0;
-            }
-        }
-
-        applyUi();
-
-        // Press Enter to analyze (Shift + Enter for a new line)
-        document.getElementById('msg').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                analyze();
-            }
+  <script>
+    //  Pop-in heading 
+    function playHero() {
+      const heading = document.getElementById('welcome');
+      heading.innerHTML = '';
+      const words = 'Welcome to Scam Spotter'.split(' ');
+      let count = 0;
+      words.forEach(function (word) {
+        const wordSpan = document.createElement('span');
+        wordSpan.className = 'word';
+        word.split('').forEach(function (letter) {
+          const span = document.createElement('span');
+          span.className = 'letter';
+          span.textContent = letter;
+          span.style.animationDelay = (count * 0.06) + 's';
+          wordSpan.appendChild(span);
+          count++;
         });
 
-        // Institutions panel
-        function openPlans() {
-            document.getElementById('plans').classList.add('open');
+
+        heading.appendChild(wordSpan);
+        heading.appendChild(document.createTextNode(' '));
+      });
+    }
+    playHero();
+
+    //  Words for the screen, in two languages 
+    const ui = {
+      en: {
+        msgTitle: 'Your message, with warning signs marked',
+        foundTitle: 'What we found',
+        explTitle: 'Explanation',
+        nextTitle: 'What to do next',
+        thSign: 'Warning sign',
+        thFound: 'Found in message',
+        thWhy: 'Why it matters',
+        thRisk: 'Risk',
+        thPoints: 'Points',
+        listen: 'Listen',
+        stop: 'Stop',
+        levels: { high: 'HIGH', medium: 'MEDIUM', low: 'LOW' },
+        riskLabels: { high: 'High', medium: 'Medium', low: 'Low' },
+        riskWord: 'RISK',
+        noneTable: 'No warning signs found.',
+        noneStep: 'No warning signs found. If you are still unsure, check with the sender through their official website or app.',
+        extraStep: 'If you already shared an OTP or paid, contact your bank straight away. Report scams at cybercrime.gov.in or call 1930 (India).',
+        noVoice: ''
+      },
+      hi: {
+        msgTitle: 'आपका संदेश, चेतावनी संकेतों के साथ',
+        foundTitle: 'हमें क्या मिला',
+        explTitle: 'स्पष्टीकरण',
+        nextTitle: 'आगे क्या करें',
+        thSign: 'चेतावनी संकेत',
+        thFound: 'संदेश में मिला',
+        thWhy: 'यह क्यों मायने रखता है',
+        thRisk: 'जोखिम',
+        thPoints: 'अंक',
+        listen: 'सुनें',
+        stop: 'रोकें',
+        levels: { high: 'उच्च', medium: 'मध्यम', low: 'कम' },
+        riskLabels: { high: 'उच्च', medium: 'मध्यम', low: 'कम' },
+        riskWord: 'जोखिम',
+        noneTable: 'कोई चेतावनी संकेत नहीं मिला।',
+        noneStep: 'कोई चेतावनी संकेत नहीं मिला। फिर भी शक हो तो भेजने वाले से उनकी आधिकारिक वेबसाइट या ऐप के ज़रिए पुष्टि करें।',
+        extraStep: 'अगर आपने OTP साझा कर दिया है या पैसे भेज दिए हैं, तो तुरंत अपने बैंक से संपर्क करें। ठगी की शिकायत cybercrime.gov.in पर करें या 1930 पर कॉल करें (भारत)।',
+        noVoice: 'इस डिवाइस पर हिंदी आवाज़ उपलब्ध नहीं है। कृपया टेक्स्ट पढ़ें।'
+      }
+    };
+
+    //  Rules (each rule has English and Hindi words) 
+    const rules = [
+      {
+        name: { en: 'Fake Urgency', hi: 'झूठी जल्दबाज़ी' }, pattern: /by today|expires? today|blocked today|today only|before today|urgent|immediate|asap|within 24 hours|emergency|act now|right now|right away|turant|foran|jaldi|aaj hi|तुरंत|फौरन|आज ही/i,
+        points: 20,
+        why: {
+          en: 'Pressure can make people act without thinking.',
+          hi: 'जल्दबाज़ी का दबाव लोगों को बिना सोचे काम करने पर मजबूर कर देता है।'
+        },
+        step: {
+          en: 'Take a breath. Real banks give you time, so do not act in a hurry.',
+          hi: 'गहरी सांस लें। असली बैंक आपको समय देते हैं, इसलिए जल्दबाज़ी में कोई कदम न उठाएं।'
         }
-        function closePlans() {
-            document.getElementById('plans').classList.remove('open');
+      },
+      {
+        name: { en: 'Account Threats', hi: 'खाता बंद करने की धमकी' },
+        pattern: /kyc.{0,30}(incomplete|pending|expired)|will be (blocked|suspended|closed|terminated)|khata\s+(band|block)|account\s+(band|block)\s+ho|kyc\s+adhura|खाता\s+(बंद|ब्लॉक)/i,
+        points: 15,
+        why: {
+          en: 'Scammers often threaten to block or suspend accounts to create fear.',
+          hi: 'ठग अक्सर खाता बंद या ब्लॉक करने की धमकी देकर डर पैदा करते हैं।'
+        },
+        step: {
+          en: "Open your bank's official app or call the number on your card to check your account.",
+          hi: 'अपने बैंक के आधिकारिक ऐप में जाकर या अपने कार्ड पर छपे नंबर पर कॉल करके अपना खाता जांचें।'
         }
-        document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') { closePlans(); }
+      },
+      {
+        name: { en: 'Suspicious Links', hi: 'संदिग्ध लिंक' },
+        pattern: /https?:\/\/\S+/i,
+        points: 25,
+        why: {
+          en: 'Scammers often use links to phishing sites or to download malware.',
+          hi: 'ठग अक्सर नकली वेबसाइट या वायरस वाले लिंक भेजते हैं।'
+        },
+        step: {
+          en: 'Do not click the link.',
+          hi: 'लिंक पर क्लिक न करें।'
+        }
+      },
+      {
+        name: { en: 'OTP request', hi: 'OTP की मांग' },
+        pattern: /(?<!not\s)(?<!n't\s)(?<!never\s)(share|send|tell|give|provide)\s+(me\s+|us\s+)?(the\s+|your\s+)?otp|otp\s+(bhejo|bhejiye|batao|dijiye|भेजो|बताओ)|(bhejo|batao|dijiye)\s+(apna\s+)?otp|ओटीपी\s+(भेजो|बताओ|दीजिए)/i,
+        points: 40,
+        why: {
+          en: 'A bank never asks for an OTP.',
+          hi: 'बैंक कभी भी आपसे OTP नहीं मांगता।'
+        },
+        step: {
+          en: 'Never share your OTP with anyone.',
+          hi: 'अपना OTP किसी के साथ साझा न करें।'
+        }
+      },
+      {
+        name: { en: 'Shortened link', hi: 'छोटा (शॉर्ट) लिंक' },
+        pattern: /\b(?:bit\.ly|tinyurl\.com|t\.co|goo\.gl|cutt\.ly|is\.gd|rb\.gy|shorturl\.at|ow\.ly)\/\S+/i,
+        points: 20,
+        why: {
+          en: 'Short links hide the real website address.',
+          hi: 'छोटे लिंक असली वेबसाइट का पता छिपा देते हैं।'
+        },
+        step: {
+          en: 'Do not click it. Open the official app or website yourself.',
+          hi: 'इस पर क्लिक न करें। आधिकारिक ऐप या वेबसाइट खुद खोलें।'
+        }
+      },
+      {
+        name: { en: 'Lookalike bank link', hi: 'बैंक जैसा दिखने वाला नकली लिंक' },
+        pattern: /https?:\/\/[^\s\/]*(?:(?:sbi|hdfc|icici|axis|pnb|paytm|phonepe|esewa|khalti)[^\s\/]*-|-[^\s\/]*(?:sbi|hdfc|icici|axis|pnb|paytm|phonepe|esewa|khalti))[^\s\/]*/i,
+        points: 30,
+        why: {
+          en: "The link uses a bank's name but is not the bank's official website.",
+          hi: 'लिंक में बैंक का नाम है, लेकिन यह बैंक की आधिकारिक वेबसाइट नहीं है।'
+        },
+        step: {
+          en: "Type the bank's website yourself or use its official app.",
+          hi: 'बैंक की वेबसाइट खुद टाइप करें या उसका आधिकारिक ऐप इस्तेमाल करें।'
+        }
+      },
+      {
+        name: { en: 'Insecure link (http)', hi: 'असुरक्षित लिंक (http)' },
+        pattern: /http:\/\/\S+/i,
+        points: 10,
+        why: {
+          en: 'The link does not use https, so it is not secure.',
+          hi: 'लिंक में https नहीं है, इसलिए यह सुरक्षित नहीं है।'
+        },
+        step: {
+          en: 'Do not open links that start with http.',
+          hi: 'http से शुरू होने वाले लिंक न खोलें।'
+        }
+      },
+      {
+        name: { en: 'Arrest or police threat', hi: 'गिरफ्तारी या पुलिस की धमकी' },
+        pattern: /digital\s+arrest|(you\s+are|you're)\s+(under|being)\s+arrest|arrest\s+warrant|\bcbi\b|narcotics|money\s+laundering|giraftar|डिजिटल\s+अरेस्ट|गिरफ्तार/i,
+        points: 40,
+        why: {
+          en: 'Police and courts never arrest people over a phone or video call. "Digital arrest" is a scam.',
+          hi: 'पुलिस या अदालत फ़ोन या वीडियो कॉल पर गिरफ्तारी नहीं करती। "डिजिटल अरेस्ट" एक ठगी है।'
+        },
+        step: {
+          en: 'Hang up. Call 1930 and tell someone you trust.',
+          hi: 'कॉल काट दें। 1930 पर कॉल करें और किसी भरोसेमंद व्यक्ति को बताएं।'
+        }
+      },
+      {
+        name: { en: 'Secrecy demand', hi: 'किसी को न बताने का दबाव' },
+        pattern: /(don['’]?t|do\s+not|never)\s+(tell|inform)\s+(anyone|anybody|your\s+family|the\s+police|your\s+bank)(?!\s+(?:your\s+|the\s+)?(?:otp|pin|password|cvv))|keep\s+(this|it)\s+(a\s+)?(secret|confidential)|kisi\s+ko\s+(mat|na)\s+batana|किसी\s+को\s+(मत|न)\s+बताना/i,
+        points: 25,
+        why: {
+          en: 'Scammers isolate you so that nobody can warn you.',
+          hi: 'ठग आपको अकेला कर देते हैं ताकि कोई आपको सावधान न कर सके।'
+        },
+        step: {
+          en: 'Talk to family or a friend before you do anything.',
+          hi: 'कुछ भी करने से पहले परिवार या दोस्त से बात करें।'
+        }
+      },
+      {
+        name: { en: 'Money demand', hi: 'पैसे भेजने की मांग' },
+        pattern: /transfer\s+(the\s+|your\s+)?(money|amount|funds)|send\s+(the\s+)?(money|amount)|pay\s+(a\s+|the\s+)?(fine|penalty)|paise\s+(bhejo|transfer)|paisa\s+bhejo|पैसे\s+(भेजो|ट्रांसफर)/i,
+        points: 30,
+        why: {
+          en: 'Real officials and banks never ask you to transfer money to a "safe" account or pay a fine on a call.',
+          hi: 'असली अधिकारी या बैंक कॉल पर कभी "सुरक्षित" खाते में पैसे भेजने या जुर्माना भरने को नहीं कहते।'
+        },
+        step: {
+          en: 'Do not send any money.',
+          hi: 'कोई पैसा न भेजें।'
+        }
+      },
+      {
+        name: { en: 'Prize or lottery claim', hi: 'इनाम या लॉटरी का दावा' },
+        pattern: /you\s+(have\s+)?won\b(?!['’]t)|you\s+are\s+(a\s+)?winner|congratulations.{0,40}(won|prize|lottery)|lucky\s+draw|lottery|claim\s+(your\s+)?(prize|reward|gift)|prize\s+money|inaam|jeet\s+gaye|इनाम|लॉटरी|जीत\s+गए/i,
+        points: 30,
+        why: {
+          en: 'Scammers say you won a prize so that you pay a "fee" or share your details. You cannot win a contest you never entered.',
+          hi: 'ठग इनाम का लालच देकर "फीस" मांगते हैं या आपकी जानकारी लेते हैं। जिस प्रतियोगिता में आपने हिस्सा ही नहीं लिया, उसमें आप जीत नहीं सकते।'
+        },
+        step: {
+          en: 'Do not pay any fee and do not share your details to claim a prize.',
+          hi: 'इनाम पाने के लिए कोई फीस न दें और अपनी जानकारी साझा न करें।'
+        }
+      }
+    ];
+
+    //  Samples
+    const samples = [
+      'SBI ALERT: Your KYC is incomplete and your account will be blocked today. Update immediately at http://sbi-kyc-update.example/verify and share the OTP you receive to confirm.',
+      'Your OTP is 4821. Do not share it with anyone.',
+      'Your order #1234 has been shipped and will arrive tomorrow. Track it in the official app.'
+    ];
+
+    function loadSample(n) {
+      document.getElementById('msg').value = samples[n];
+      analyze();
+    }
+
+    function makeSafe(text) {
+      return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    //  Memory: what the last Analyze found 
+    let lastFound = [];
+    let lastScore = 0;
+    let lastRaw = 0;
+    let lastLevel = 'low';
+    let hasResult = false;
+
+    function getLang() {
+      return document.getElementById('lang').value;
+    }
+
+    // Writes the screen words in the chosen language
+    function applyUi() {
+      const t = ui[getLang()];
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        el.textContent = t[el.getAttribute('data-i18n')];
+      });
+      document.documentElement.lang = getLang();
+    }
+
+    function changeLang() {
+      stopSpeak();
+      applyUi();
+      if (hasResult) {
+        showExplanation();
+      }
+    }
+
+    //  Shows banner, table, explanation and steps in the chosen language 
+    function showExplanation() {
+      const lang = getLang();
+      const t = ui[lang];
+
+      const banner = document.getElementById('banner');
+      let note = '';
+      if (lastRaw > 100) {
+        note = (lang === 'hi') ? ' (कुल ' + lastRaw + ', अधिकतम 100)' : ' (total ' + lastRaw + ', capped at 100)';
+      }
+      banner.textContent = lastScore + ' / 100 = ' + t.levels[lastLevel] + ' ' + t.riskWord + note;
+      banner.className = 'banner ' + lastLevel;
+
+      let rows = '';
+      let html = '';
+      let stepsHtml = '';
+
+      lastFound.forEach(function (item) {
+        const words = item.words.map(function (w) {
+          return '<mark style="background:' + item.color + '">' + makeSafe(w) + '</mark>';
+        }).join(' ');
+
+        rows += '<tr>' +
+          '<td>' + item.rule.name[lang] + '</td>' +
+          '<td>' + words + '</td>' +
+          '<td>' + item.rule.why[lang] + '</td>' +
+          '<td>' + t.riskLabels[item.risk] + '</td>' +
+          '<td>+' + item.rule.points + '</td>' +
+          '</tr>'; rows += '<tr>' +
+            '<td>' + item.rule.name[lang] + '</td>' +
+            '<td data-label="' + t.thFound + '">' + words + '</td>' +
+            '<td>' + item.rule.why[lang] + '</td>' +
+            '<td data-label="' + t.thRisk + '">' + t.riskLabels[item.risk] + '</td>' +
+            '<td data-label="' + t.thPoints + '">+' + item.rule.points + '</td>' +
+            '</tr>';
+
+        html += '<p><b>' + item.rule.name[lang] + '</b> (+' + item.rule.points + ')<br>' + item.rule.why[lang] + '</p>';
+        stepsHtml += '<li>' + item.rule.step[lang] + '</li>';
+      });
+
+      if (rows === '') { rows = '<tr><td colspan="5">' + t.noneTable + '</td></tr>'; }
+      if (html === '') { html = '<p>' + t.noneTable + '</p>'; }
+      if (lastScore >= 30) { stepsHtml += '<li>' + t.extraStep + '</li>'; }
+      if (stepsHtml === '') { stepsHtml = '<li>' + t.noneStep + '</li>'; }
+
+      document.getElementById('tableBody').innerHTML = rows;
+      document.getElementById('result').innerHTML = html;
+      document.getElementById('steps').innerHTML = '<ul>' + stepsHtml + '</ul>';
+      document.getElementById('voiceNote').textContent = '';
+    }
+
+    //  Audio 
+    function buildSpeech() {
+      const lang = getLang();
+      const t = ui[lang];
+      let parts = [];
+
+      if (lang === 'hi') {
+        parts.push('जोखिम स्तर ' + t.levels[lastLevel] + '। स्कोर 100 में से ' + lastScore + '।');
+      } else {
+        parts.push('Risk level ' + t.levels[lastLevel] + '. Score ' + lastScore + ' out of 100.');
+      }
+
+      if (lastFound.length === 0) {
+        parts.push(t.noneStep);
+      } else {
+        lastFound.forEach(function (item) {
+          parts.push(item.rule.name[lang] + '. ' + item.rule.why[lang]);
+        });
+        parts.push(lang === 'hi' ? 'आगे क्या करें।' : 'What to do next.');
+        lastFound.forEach(function (item) {
+          parts.push(item.rule.step[lang]);
+        });
+        if (lastScore >= 30) { parts.push(t.extraStep); }
+      }
+      return parts.join(' ');
+    }
+
+    function speak() {
+      if (!('speechSynthesis' in window)) {
+        alert('Audio is not supported in this browser.');
+        return;
+      }
+      if (!hasResult) { return; }
+
+      window.speechSynthesis.cancel();
+      const lang = getLang();
+      const utter = new SpeechSynthesisUtterance(buildSpeech());
+      utter.lang = (lang === 'hi') ? 'hi-IN' : 'en-IN';
+      utter.rate = 0.9;
+
+      const voices = window.speechSynthesis.getVoices();
+      const wanted = (lang === 'hi') ? 'hi' : 'en';
+      const voice = voices.find(function (v) {
+        return v.lang.toLowerCase().indexOf(wanted) === 0;
+      });
+
+      if (voice) {
+        utter.voice = voice;
+        document.getElementById('voiceNote').textContent = '';
+      } else if (lang === 'hi') {
+        document.getElementById('voiceNote').textContent = ui.hi.noVoice;
+      }
+
+      window.speechSynthesis.speak(utter);
+    }
+
+    function stopSpeak() {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+      }
+    }
+
+    //  Clear 
+    function clearAll() {
+      stopSpeak();
+      hasResult = false;
+      document.getElementById('msg').value = '';
+      document.getElementById('results').style.display = 'none';
+      document.getElementById('hero').style.display = 'flex';
+      playHero();
+    }
+    //  Analyze
+    function analyze() {
+      const text = document.getElementById('msg').value;
+      if (text.trim() === '') {
+        alert('Please paste a message first.');
+        return;
+      }
+
+      stopSpeak();
+      document.getElementById('hero').style.display = 'none';
+
+      let score = 0;
+      lastFound = [];
+      const ranges = [];
+
+      for (const rule of rules) {
+        const everywhere = new RegExp(rule.pattern.source, 'gi');
+        const matches = Array.from(text.matchAll(everywhere));
+        if (matches.length === 0) { continue; }
+
+        score += rule.points;
+
+        let color = '#fdf0a6';
+        let risk = 'low';
+        if (rule.points >= 40) {
+          color = '#fbb6c4';
+          risk = 'high';
+        } else if (rule.points >= 25) {
+          color = '#fdd9a8';
+          risk = 'medium';
+        }
+
+        lastFound.push({
+          rule: rule,
+          color: color,
+          risk: risk,
+          words: matches.map(function (m) { return m[0]; })
         });
 
-    </script>
+        matches.forEach(function (m) {
+          ranges.push({ start: m.index, end: m.index + m[0].length, color: color, points: rule.points });
+        });
+      }
+
+      // When two matches overlap, keep the longer one (then the stronger rule)
+      ranges.sort(function (a, b) {
+        return ((b.end - b.start) - (a.end - a.start)) || (b.points - a.points);
+      });
+      const chosen = [];
+      ranges.forEach(function (r) {
+        const overlaps = chosen.some(function (c) { return r.start < c.end && r.end > c.start; });
+        if (!overlaps) { chosen.push(r); }
+      });
+      chosen.sort(function (a, b) { return a.start - b.start; });
+
+      // Build the highlighted message from left to right
+      let marked = '';
+      let pos = 0;
+      chosen.forEach(function (r) {
+        marked += makeSafe(text.slice(pos, r.start));
+        marked += '<mark style="background:' + r.color + '">' + makeSafe(text.slice(r.start, r.end)) + '</mark>';
+        pos = r.end;
+      });
+      marked += makeSafe(text.slice(pos));
+      lastRaw = score;
+      if (score > 100) { score = 100; }
+
+      let level = 'low';
+      if (score >= 60) {
+        level = 'high';
+      } else if (score >= 30) {
+        level = 'medium';
+      }
+
+      lastScore = score;
+      lastLevel = level;
+      hasResult = true;
+
+      document.getElementById('highlighted').innerHTML = marked;
+      applyUi();
+      showExplanation();
+
+      // Restart the fade-in every time
+      const results = document.getElementById('results');
+      results.style.display = 'none';
+      void results.offsetWidth;
+      results.style.display = 'block';
+
+      if (window.innerWidth <= 600) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        document.getElementById('stage').scrollTop = 0;
+      }
+    }
+
+    applyUi();
+
+    // Press Enter to analyze (Shift + Enter for a new line)
+    document.getElementById('msg').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        analyze();
+      }
+    });
+
+    // Institutions panel
+    function openPlans() {
+      document.getElementById('plans').classList.add('open');
+    }
+    function closePlans() {
+      document.getElementById('plans').classList.remove('open');
+    }
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { closePlans(); }
+    });
+
+  </script>
 </body>
 
 </html>
