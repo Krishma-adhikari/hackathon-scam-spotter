@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fde8f1">
   <title>Scam Spotter</title>
   <style>
     * { box-sizing: border-box; }
@@ -159,15 +160,29 @@
     .top b { white-space: nowrap; }
 
     @media (max-width: 600px) {
-      .app { padding: 0 14px; }
+      html, body { height: auto; }
+      .app { padding: 0 14px; height: auto; min-height: 100dvh; }
+      .stage { flex: none; overflow: visible; }
 
-      /* top bar */
-      .top { padding: 12px 0 6px; flex-wrap: wrap; gap: 8px; }
+      /* top bar stays visible while you scroll */
+      .top {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        margin: 0 -14px;
+        padding: 10px 14px;
+        flex-wrap: wrap;
+        gap: 8px;
+        background: rgba(253, 232, 241, 0.92);
+        -webkit-backdrop-filter: blur(8px);
+        backdrop-filter: blur(8px);
+      }
       .top span { display: none; }
-      .linkbtn { padding: 7px 12px; font-size: 13px; }
-      select { padding: 7px 10px; font-size: 13px; }
+      .linkbtn { padding: 8px 12px; font-size: 13px; }
+      select { padding: 8px 10px; font-size: 13px; }
 
-      /* hero */
+      /* heading screen */
+      .hero { height: auto; min-height: 50dvh; padding-bottom: 32px; }
       .hero h1 { font-size: clamp(34px, 11vw, 48px); }
       .tagline { font-size: 15px; margin-top: 12px; }
 
@@ -175,6 +190,7 @@
       .section { margin-top: 24px; }
       .banner { font-size: 18px; padding: 14px; }
       #highlighted { font-size: 16px; line-height: 1.9; }
+      .listenrow button { min-height: 44px; padding: 10px 20px; }
 
       /* table becomes cards */
       table, thead, tbody, tr, td { display: block; }
@@ -190,28 +206,21 @@
         letter-spacing: 0.5px;
       }
 
-      /* compact bottom input area */
-      .bottom { padding: 10px 0 12px; }
-      .note, .samples span { display: none; }
-      .samples { margin-top: 8px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
-      .samples button { flex: none; white-space: nowrap; }
+      /* input area */
+      .bottom { margin-top: 24px; padding: 24px 0 28px; border-top: none; }
       .inputrow { flex-wrap: wrap; }
       textarea { flex: 1 1 100%; min-height: 52px; max-height: 90px; padding: 10px 14px; }
-      .inputrow button { flex: 1; padding: 10px; }
+      .inputrow button { flex: 1; min-height: 44px; padding: 10px; }
+      .samples { flex-wrap: wrap; margin-top: 10px; }
+      .samples span { width: 100%; }
+      .samples button { flex: 1 1 auto; min-height: 40px; white-space: nowrap; }
+      .note { margin-top: 16px; }
 
       /* institutions panel */
-      .panel { padding: 22px 16px; }
+      .panel { padding: 22px 16px; max-height: 88dvh; overscroll-behavior: contain; }
       .panel h2 { padding-right: 44px; font-size: 20px; }
+      .closebtn { min-width: 40px; min-height: 40px; }
       .plangrid { grid-template-columns: 1fr; gap: 10px; }
-
-      /* whole page scrolls on phones */
-      html, body { height: auto; }
-      .app { height: auto; min-height: 100dvh; }
-      .stage { flex: none; overflow: visible; }
-      .hero { height: auto; min-height: 55dvh; }
-      .bottom { border-top: none; padding: 16px 0 28px; }
-      .hero { min-height: 50dvh; padding-bottom: 32px; }
-      .bottom { margin-top: 24px; padding: 24px 0 28px; border-top: none; }
     }
   </style>
 </head>
@@ -326,13 +335,13 @@
   </div>
 
   <script>
-    // playHero now reads the heading from ui[lang].welcome, so it works in English and Hindi
+    // playHero reads the heading from ui[lang].welcome, so it works in English and Hindi
     function playHero() {
-      const lang = getLang(); // find which language is selected
+      const lang = getLang();
       const heading = document.getElementById('welcome');
       heading.innerHTML = '';
-      heading.setAttribute('aria-label', ui[lang].welcome); //screen readers get the right language
-      const words = ui[lang].welcome.split(' '); //  was the fixed English sentence
+      heading.setAttribute('aria-label', ui[lang].welcome);
+      const words = ui[lang].welcome.split(' ');
       let count = 0;
       words.forEach(function (word) {
         const wordSpan = document.createElement('span');
@@ -352,9 +361,8 @@
         heading.appendChild(document.createTextNode(' '));
       });
     }
-    //  the early playHero() call was removed from here. It now runs at the bottom, after ui exists.
 
-    //  Words for the screen, in two languages 
+    // ---------- Words for the screen, in two languages ----------
     const ui = {
       en: {
         msgTitle: 'Your message, with warning signs marked',
@@ -375,7 +383,6 @@
         noneStep: 'No warning signs found. If you are still unsure, check with the sender through their official website or app.',
         extraStep: 'If you already shared an OTP or paid, contact your bank straight away. Report scams at cybercrime.gov.in or call 1930 (India).',
         noVoice: '',
-        // every other piece of screen text, so nothing stays English-only
         welcome: 'Welcome to Scam Spotter',
         tagline: 'Paste a suspicious message. See the warning signs.',
         topHint: 'Paste a suspicious message',
@@ -424,7 +431,6 @@
         noneStep: 'कोई चेतावनी संकेत नहीं मिला। फिर भी शक हो तो भेजने वाले से उनकी आधिकारिक वेबसाइट या ऐप के ज़रिए पुष्टि करें।',
         extraStep: 'अगर आपने OTP साझा कर दिया है या पैसे भेज दिए हैं, तो तुरंत अपने बैंक से संपर्क करें। ठगी की शिकायत cybercrime.gov.in पर करें या 1930 पर कॉल करें (भारत)।',
         noVoice: 'इस डिवाइस पर हिंदी आवाज़ उपलब्ध नहीं है। कृपया टेक्स्ट पढ़ें।',
-        //Hindi version of every extra piece of screen text
         welcome: 'स्कैम स्पॉटर में आपका स्वागत है',
         tagline: 'कोई संदिग्ध संदेश पेस्ट करें। चेतावनी संकेत देखें।',
         topHint: 'संदिग्ध संदेश पेस्ट करें',
@@ -456,10 +462,11 @@
       }
     };
 
-    //  Rules (each rule has English and Hindi words) 
+    // ---------- Rules (each rule has English and Hindi words) ----------
     const rules = [
       {
-        name: { en: 'Fake Urgency', hi: 'झूठी जल्दबाज़ी' }, pattern: /by today|expires? today|blocked today|today only|before today|urgent|immediate|asap|within 24 hours|emergency|act now|right now|right away|turant|foran|jaldi|aaj hi|तुरंत|फौरन|आज ही/i,
+        name: { en: 'Fake Urgency', hi: 'झूठी जल्दबाज़ी' },
+        pattern: /by today|expires? today|blocked today|today only|before today|urgent|immediate|asap|within 24 hours|emergency|act now|right now|right away|turant|foran|jaldi|aaj hi|तुरंत|फौरन|आज ही/i,
         points: 20,
         why: {
           en: 'Pressure can make people act without thinking.',
@@ -602,14 +609,13 @@
       }
     ];
 
-    // samples are now split by language (en / hi) instead of one list
+    // ---------- Samples (split by language) ----------
     const samples = {
       en: [
         'SBI ALERT: Your KYC is incomplete and your account will be blocked today. Update immediately at http://sbi-kyc-update.example/verify and share the OTP you receive to confirm.',
         'Your OTP is 4821. Do not share it with anyone.',
         'Your order #1234 has been shipped and will arrive tomorrow. Track it in the official app.'
       ],
-      // Hindi samples. They trigger the same rules, and the last two stay Low risk
       hi: [
         'SBI अलर्ट: आपका खाता बंद हो जाएगा। तुरंत http://sbi-kyc-update.example/verify पर अपडेट करें और ओटीपी भेजो।',
         'आपका OTP 4821 है। इसे किसी के साथ साझा न करें।',
@@ -618,7 +624,7 @@
     };
 
     function loadSample(n) {
-      document.getElementById('msg').value = samples[getLang()][n]; // CHANGED: picks the sample in the selected language
+      document.getElementById('msg').value = samples[getLang()][n];
       analyze();
     }
 
@@ -626,7 +632,7 @@
       return text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    //  Memory: what the last Analyze found 
+    // ---------- Memory: what the last Analyze found ----------
     let lastFound = [];
     let lastScore = 0;
     let lastRaw = 0;
@@ -637,33 +643,31 @@
       return document.getElementById('lang').value;
     }
 
-    //  applyUi now also fills placeholders, allows bold text (innerHTML), and sets the typing language
+    // Fills every screen word in the chosen language
     function applyUi() {
       const lang = getLang();
       const t = ui[lang];
       document.querySelectorAll('[data-i18n]').forEach(function (el) {
-        el.innerHTML = t[el.getAttribute('data-i18n')]; // CHANGED: innerHTML so <b> tags in the Institutions text work
+        el.innerHTML = t[el.getAttribute('data-i18n')];
       });
-      //  fill the textarea placeholder in the chosen language
       document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
         el.placeholder = t[el.getAttribute('data-i18n-ph')];
       });
-      document.getElementById('msg').lang = lang; //  tells the phone keyboard which language the box is for
+      document.getElementById('msg').lang = lang;
       document.documentElement.lang = lang;
     }
 
-    // when there is no result yet, replay the heading in the new language
     function changeLang() {
       stopSpeak();
       applyUi();
       if (hasResult) {
         showExplanation();
       } else {
-        playHero(); //  show the heading in the newly chosen language
+        playHero();
       }
     }
 
-    //  Shows banner, table, explanation and steps in the chosen language 
+    // ---------- Shows banner, table, explanation and steps in the chosen language ----------
     function showExplanation() {
       const lang = getLang();
       const t = ui[lang];
@@ -673,7 +677,11 @@
       if (lastRaw > 100) {
         note = (lang === 'hi') ? ' (कुल ' + lastRaw + ', अधिकतम 100)' : ' (total ' + lastRaw + ', capped at 100)';
       }
-      banner.textContent = lastScore + ' / 100 = ' + t.levels[lastLevel] + ' ' + t.riskWord + note;
+      let bannerHtml = lastScore + ' / 100 = ' + t.levels[lastLevel] + ' ' + t.riskWord;
+      if (note) {
+        bannerHtml += '<br><span style="font-size:13px;font-weight:400">' + note.trim() + '</span>';
+      }
+      banner.innerHTML = bannerHtml;
       banner.className = 'banner ' + lastLevel;
 
       let rows = '';
@@ -707,7 +715,7 @@
       document.getElementById('voiceNote').textContent = '';
     }
 
-    //  Audio 
+    // ---------- Audio ----------
     function buildSpeech() {
       const lang = getLang();
       const t = ui[lang];
@@ -736,7 +744,7 @@
 
     function speak() {
       if (!('speechSynthesis' in window)) {
-        alert(ui[getLang()].noAudio); //  the message now follows the selected language
+        alert(ui[getLang()].noAudio);
         return;
       }
       if (!hasResult) { return; }
@@ -756,7 +764,7 @@
       if (voice) {
         utter.voice = voice;
         document.getElementById('voiceNote').textContent = '';
-      } else if (lang === 'hi') {
+      } else if (lang === 'hi' && voices.length > 0) {
         document.getElementById('voiceNote').textContent = ui.hi.noVoice;
       }
 
@@ -769,20 +777,22 @@
       }
     }
 
-    //  Clear 
+    // ---------- Clear ----------
     function clearAll() {
       stopSpeak();
       hasResult = false;
       document.getElementById('msg').value = '';
       document.getElementById('results').style.display = 'none';
       document.getElementById('hero').style.display = 'flex';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
       playHero();
     }
-    //  Analyze
+
+    // ---------- Analyze ----------
     function analyze() {
       const text = document.getElementById('msg').value;
       if (text.trim() === '') {
-        alert(ui[getLang()].emptyAlert); //  the message now follows the selected language
+        alert(ui[getLang()].emptyAlert);
         return;
       }
 
@@ -875,6 +885,15 @@
 
     applyUi();
     playHero();
+
+    // Phones load their voices late, so ask for them early
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = function () {
+        window.speechSynthesis.getVoices();
+      };
+    }
+
     // Press Enter to analyze (Shift + Enter for a new line)
     document.getElementById('msg').addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && !e.shiftKey) {
@@ -883,7 +902,7 @@
       }
     });
 
-    // Institutions panel
+    // ---------- Institutions panel ----------
     function openPlans() {
       document.getElementById('plans').classList.add('open');
     }
