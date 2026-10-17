@@ -6,15 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Scam Spotter</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
-    html,
-    body {
-      height: 100%;
-    }
-
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
       margin: 0;
       font-family: "Segoe UI", "Nirmala UI", system-ui, -apple-system, Arial, sans-serif;
@@ -24,7 +17,6 @@
       background: linear-gradient(160deg, #fde8f1 0%, #f7e4f5 50%, #ece4fa 100%);
       background-attachment: fixed;
     }
-
     .app {
       width: 100%;
       max-width: 880px;
@@ -35,28 +27,9 @@
       flex-direction: column;
       padding: 0 24px;
     }
-
-    .top {
-      padding: 22px 0 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .top b {
-      color: #b4466f;
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-
-    .top span {
-      color: #a3829a;
-      font-size: 14px;
-      margin-left: 10px;
-    }
-
+    .top { padding: 22px 0 8px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+    .top b { color: #b4466f; font-size: 17px; font-weight: 600; letter-spacing: 0.3px; }
+    .top span { color: #a3829a; font-size: 14px; margin-left: 10px; }
     select {
       padding: 8px 12px;
       font-size: 14px;
@@ -67,167 +40,38 @@
       border-radius: 14px;
       outline: none;
     }
-
-    .stage {
-      flex: 1;
-      overflow-y: auto;
-      padding: 12px 0 28px;
-    }
-
-    .hero {
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
-
-    .hero h1 {
-      font-size: clamp(40px, 9vw, 84px);
-      font-weight: 600;
-      margin: 0;
-      color: #b4466f;
-      line-height: 1.15;
-    }
-
-    .word {
-      display: inline-block;
-      white-space: nowrap;
-    }
-
-    .hero h1 .letter {
-      display: inline-block;
-      opacity: 0;
-      animation: pop 0.5s ease forwards;
-    }
-
-    .tagline {
-      color: #a3829a;
-      font-size: 18px;
-      margin-top: 18px;
-    }
-
+    .stage { flex: 1; overflow-y: auto; padding: 12px 0 28px; }
+    .hero { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+    .hero h1 { font-size: clamp(40px, 9vw, 84px); font-weight: 600; margin: 0; color: #b4466f; line-height: 1.15; }
+    .word { display: inline-block; white-space: nowrap; }
+    .hero h1 .letter { display: inline-block; opacity: 0; animation: pop 0.5s ease forwards; }
+    .tagline { color: #a3829a; font-size: 18px; margin-top: 18px; }
     @keyframes pop {
-      0% {
-        opacity: 0;
-        transform: scale(0.2) translateY(30px);
-      }
-
-      70% {
-        opacity: 1;
-        transform: scale(1.2) translateY(-4px);
-      }
-
-      100% {
-        opacity: 1;
-        transform: scale(1) translateY(0);
-      }
+      0% { opacity: 0; transform: scale(0.2) translateY(30px); }
+      70% { opacity: 1; transform: scale(1.2) translateY(-4px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
     }
-
-    #results {
-      display: none;
-      padding-bottom: 12px;
-    }
-
-    #results>* {
-      opacity: 0;
-      animation: fadeUp 0.7s ease forwards;
-    }
-
-    #results>*:nth-child(1) {
-      animation-delay: 0.05s;
-    }
-
-    #results>*:nth-child(2) {
-      animation-delay: 0.20s;
-    }
-
-    #results>*:nth-child(3) {
-      animation-delay: 0.35s;
-    }
-
-    #results>*:nth-child(4) {
-      animation-delay: 0.50s;
-    }
-
-    #results>*:nth-child(5) {
-      animation-delay: 0.65s;
-    }
-
+    #results { display: none; padding-bottom: 12px; }
+    #results>* { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+    #results>*:nth-child(1) { animation-delay: 0.05s; }
+    #results>*:nth-child(2) { animation-delay: 0.20s; }
+    #results>*:nth-child(3) { animation-delay: 0.35s; }
+    #results>*:nth-child(4) { animation-delay: 0.50s; }
+    #results>*:nth-child(5) { animation-delay: 0.65s; }
     @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(14px);
-      }
-
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-
-    .section {
-      margin-top: 34px;
-    }
-
-    h3 {
-      margin: 0 0 12px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: #a3829a;
-    }
-
-    .banner {
-      padding: 18px 20px;
-      border-radius: 16px;
-      text-align: center;
-      font-size: 22px;
-      font-weight: 600;
-      letter-spacing: 0.3px;
-    }
-
-    .banner.high {
-      background: #fbdbe3;
-      color: #9f1d3d;
-    }
-
-    .banner.medium {
-      background: #fde8cf;
-      color: #94560a;
-    }
-
-    .banner.low {
-      background: #dcf1e4;
-      color: #1d6b3d;
-    }
-
-    #highlighted {
-      padding: 4px 0;
-      font-size: 17px;
-      line-height: 2;
-      white-space: pre-wrap;
-      word-break: break-word;
-    }
-
-    mark {
-      border-radius: 6px;
-      padding: 2px 6px;
-      color: inherit;
-    }
-
-    .tablewrap {
-      overflow-x: auto;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      font-size: 15px;
-    }
-
+    .section { margin-top: 34px; }
+    h3 { margin: 0 0 12px; font-size: 13px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: #a3829a; }
+    .banner { padding: 18px 20px; border-radius: 16px; text-align: center; font-size: 22px; font-weight: 600; letter-spacing: 0.3px; }
+    .banner.high { background: #fbdbe3; color: #9f1d3d; }
+    .banner.medium { background: #fde8cf; color: #94560a; }
+    .banner.low { background: #dcf1e4; color: #1d6b3d; }
+    #highlighted { padding: 4px 0; font-size: 17px; line-height: 2; white-space: pre-wrap; word-break: break-word; }
+    mark { border-radius: 6px; padding: 2px 6px; color: inherit; }
+    .tablewrap { overflow-x: auto; }
+    table { border-collapse: collapse; width: 100%; font-size: 15px; }
     th {
       text-align: left;
       font-size: 12px;
@@ -238,62 +82,16 @@
       padding: 10px 14px 10px 0;
       border-bottom: 1px solid #ebcfe0;
     }
-
-    td {
-      text-align: left;
-      vertical-align: top;
-      padding: 16px 14px 16px 0;
-      border-bottom: 1px solid #f1dce8;
-      line-height: 1.8;
-    }
-
-    td:first-child {
-      font-weight: 600;
-      color: #6b3c58;
-    }
-
-    .listenrow {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 14px;
-      flex-wrap: wrap;
-    }
-
-    .listenrow button {
-      padding: 8px 16px;
-      font-size: 14px;
-    }
-
-    #voiceNote {
-      font-size: 13px;
-      color: #b4466f;
-      margin: 0 0 12px;
-    }
-
-    #result p {
-      margin: 0 0 14px;
-    }
-
-    #steps ul {
-      margin: 0;
-      padding-left: 20px;
-    }
-
-    #steps li {
-      margin-bottom: 12px;
-    }
-
-    .bottom {
-      padding: 14px 0 18px;
-      border-top: 1px solid #f0d3e3;
-    }
-
-    .inputrow {
-      display: flex;
-      gap: 10px;
-      align-items: flex-end;
-    }
-
+    td { text-align: left; vertical-align: top; padding: 16px 14px 16px 0; border-bottom: 1px solid #f1dce8; line-height: 1.8; }
+    td:first-child { font-weight: 600; color: #6b3c58; }
+    .listenrow { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap; }
+    .listenrow button { padding: 8px 16px; font-size: 14px; }
+    #voiceNote { font-size: 13px; color: #b4466f; margin: 0 0 12px; }
+    #result p { margin: 0 0 14px; }
+    #steps ul { margin: 0; padding-left: 20px; }
+    #steps li { margin-bottom: 12px; }
+    .bottom { padding: 14px 0 18px; border-top: 1px solid #f0d3e3; }
+    .inputrow { display: flex; gap: 10px; align-items: flex-end; }
     textarea {
       flex: 1;
       padding: 12px 16px;
@@ -306,16 +104,8 @@
       resize: none;
       outline: none;
     }
-
-    textarea:focus {
-      border-color: #d98aae;
-      background: rgba(255, 255, 255, 0.5);
-    }
-
-    textarea::placeholder {
-      color: #c2a0b4;
-    }
-
+    textarea:focus { border-color: #d98aae; background: rgba(255, 255, 255, 0.5); }
+    textarea::placeholder { color: #c2a0b4; }
     button {
       padding: 11px 18px;
       font-size: 15px;
@@ -327,55 +117,14 @@
       cursor: pointer;
       transition: background 0.2s;
     }
-
-    button:hover {
-      background: rgba(255, 255, 255, 0.8);
-    }
-
-    button.primary {
-      background: #c2507f;
-      color: white;
-      font-weight: 600;
-    }
-
-    button.primary:hover {
-      background: #a8406b;
-    }
-
-    .samples {
-      margin-top: 12px;
-      font-size: 14px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      align-items: center;
-      color: #a3829a;
-    }
-
-    .samples button {
-      padding: 6px 14px;
-      font-size: 13px;
-    }
-
-    .note {
-      margin: 12px 0 0;
-      font-size: 12px;
-      color: #b898aa;
-      text-align: center;
-      line-height: 1.6;
-    }
-
-    .topright {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-    }
-
-    .linkbtn {
-      padding: 8px 14px;
-      font-size: 14px;
-    }
-
+    button:hover { background: rgba(255, 255, 255, 0.8); }
+    button.primary { background: #c2507f; color: white; font-weight: 600; }
+    button.primary:hover { background: #a8406b; }
+    .samples { margin-top: 12px; font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: #a3829a; }
+    .samples button { padding: 6px 14px; font-size: 13px; }
+    .note { margin: 12px 0 0; font-size: 12px; color: #b898aa; text-align: center; line-height: 1.6; }
+    .topright { display: flex; gap: 10px; align-items: center; }
+    .linkbtn { padding: 8px 14px; font-size: 14px; }
     .overlay {
       display: none;
       position: fixed;
@@ -386,11 +135,7 @@
       padding: 16px;
       z-index: 10;
     }
-
-    .overlay.open {
-      display: flex;
-    }
-
+    .overlay.open { display: flex; }
     .panel {
       position: relative;
       width: 100%;
@@ -402,147 +147,41 @@
       padding: 28px;
       color: #4a3344;
     }
-
-    .panel h2 {
-      margin: 0 0 8px;
-      color: #b4466f;
-      font-weight: 600;
-    }
-
-    .lead {
-      margin-top: 0;
-    }
-
-    .closebtn {
-      position: absolute;
-      top: 14px;
-      right: 14px;
-      padding: 6px 12px;
-      font-size: 14px;
-    }
-
-    .plangrid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin: 20px 0;
-    }
-
-    .plan {
-      background: rgba(255, 255, 255, 0.55);
-      border-radius: 16px;
-      padding: 16px;
-    }
-
-    .plan h4 {
-      margin: 0 0 4px;
-      color: #6b3c58;
-    }
-
-    .plan p {
-      margin: 6px 0 0;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .price {
-      color: #b4466f;
-      font-weight: 600;
-    }
-
-    .fine {
-      font-size: 12px;
-      color: #a3829a;
-    }
-
-
-    .top b {
-      white-space: nowrap;
-    }
+    .panel h2 { margin: 0 0 8px; color: #b4466f; font-weight: 600; }
+    .lead { margin-top: 0; }
+    .closebtn { position: absolute; top: 14px; right: 14px; padding: 6px 12px; font-size: 14px; }
+    .plangrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0; }
+    .plan { background: rgba(255, 255, 255, 0.55); border-radius: 16px; padding: 16px; }
+    .plan h4 { margin: 0 0 4px; color: #6b3c58; }
+    .plan p { margin: 6px 0 0; font-size: 14px; line-height: 1.6; }
+    .price { color: #b4466f; font-weight: 600; }
+    .fine { font-size: 12px; color: #a3829a; }
+    .top b { white-space: nowrap; }
 
     @media (max-width: 600px) {
-      .app {
-        padding: 0 14px;
-      }
+      .app { padding: 0 14px; }
 
       /* top bar */
-      .top {
-        padding: 12px 0 6px;
-        flex-wrap: wrap;
-        gap: 8px;
-      }
-
-      .top span {
-        display: none;
-      }
-
-      .linkbtn {
-        padding: 7px 12px;
-        font-size: 13px;
-      }
-
-      select {
-        padding: 7px 10px;
-        font-size: 13px;
-      }
+      .top { padding: 12px 0 6px; flex-wrap: wrap; gap: 8px; }
+      .top span { display: none; }
+      .linkbtn { padding: 7px 12px; font-size: 13px; }
+      select { padding: 7px 10px; font-size: 13px; }
 
       /* hero */
-      .hero h1 {
-        font-size: clamp(34px, 11vw, 48px);
-      }
-
-      .tagline {
-        font-size: 15px;
-        margin-top: 12px;
-      }
+      .hero h1 { font-size: clamp(34px, 11vw, 48px); }
+      .tagline { font-size: 15px; margin-top: 12px; }
 
       /* results */
-      .section {
-        margin-top: 24px;
-      }
-
-      .banner {
-        font-size: 18px;
-        padding: 14px;
-      }
-
-      #highlighted {
-        font-size: 16px;
-        line-height: 1.9;
-      }
+      .section { margin-top: 24px; }
+      .banner { font-size: 18px; padding: 14px; }
+      #highlighted { font-size: 16px; line-height: 1.9; }
 
       /* table becomes cards */
-      table,
-      thead,
-      tbody,
-      tr,
-      td {
-        display: block;
-      }
-
-      thead {
-        display: none;
-      }
-
-      tr {
-        background: rgba(255, 255, 255, 0.45);
-        border-radius: 14px;
-        padding: 12px 14px;
-        margin-bottom: 10px;
-      }
-
-      td {
-        border: none;
-        padding: 3px 0;
-        font-size: 14px;
-        line-height: 1.6;
-      }
-
-      td:first-child {
-        font-size: 15px;
-        margin-bottom: 4px;
-      }
-
+      table, thead, tbody, tr, td { display: block; }
+      thead { display: none; }
+      tr { background: rgba(255, 255, 255, 0.45); border-radius: 14px; padding: 12px 14px; margin-bottom: 10px; }
+      td { border: none; padding: 3px 0; font-size: 14px; line-height: 1.6; }
+      td:first-child { font-size: 15px; margin-bottom: 4px; }
       td[data-label]::before {
         content: attr(data-label) ": ";
         color: #a3829a;
@@ -552,95 +191,27 @@
       }
 
       /* compact bottom input area */
-      .bottom {
-        padding: 10px 0 12px;
-      }
-
-      .note,
-      .samples span {
-        display: none;
-      }
-
-      .samples {
-        margin-top: 8px;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        padding-bottom: 2px;
-      }
-
-      .samples button {
-        flex: none;
-        white-space: nowrap;
-      }
-
-      .inputrow {
-        flex-wrap: wrap;
-      }
-
-      textarea {
-        flex: 1 1 100%;
-        min-height: 52px;
-        max-height: 90px;
-        padding: 10px 14px;
-      }
-
-      .inputrow button {
-        flex: 1;
-        padding: 10px;
-      }
+      .bottom { padding: 10px 0 12px; }
+      .note, .samples span { display: none; }
+      .samples { margin-top: 8px; flex-wrap: nowrap; overflow-x: auto; padding-bottom: 2px; }
+      .samples button { flex: none; white-space: nowrap; }
+      .inputrow { flex-wrap: wrap; }
+      textarea { flex: 1 1 100%; min-height: 52px; max-height: 90px; padding: 10px 14px; }
+      .inputrow button { flex: 1; padding: 10px; }
 
       /* institutions panel */
-      .panel {
-        padding: 22px 16px;
-      }
-
-      .panel h2 {
-        padding-right: 44px;
-        font-size: 20px;
-      }
-
-      .plangrid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
+      .panel { padding: 22px 16px; }
+      .panel h2 { padding-right: 44px; font-size: 20px; }
+      .plangrid { grid-template-columns: 1fr; gap: 10px; }
 
       /* whole page scrolls on phones */
-      html,
-      body {
-        height: auto;
-      }
-
-      .app {
-        height: auto;
-        min-height: 100dvh;
-      }
-
-      .stage {
-        flex: none;
-        overflow: visible;
-      }
-
-      .hero {
-        height: auto;
-        min-height: 55dvh;
-      }
-
-      .bottom {
-        border-top: none;
-        padding: 16px 0 28px;
-      }
-
-      .hero {
-        min-height: 50dvh;
-        padding-bottom: 32px;
-      }
-
-      .bottom {
-        margin-top: 24px;
-        padding: 24px 0 28px;
-        border-top: none;
-      }
+      html, body { height: auto; }
+      .app { height: auto; min-height: 100dvh; }
+      .stage { flex: none; overflow: visible; }
+      .hero { height: auto; min-height: 55dvh; }
+      .bottom { border-top: none; padding: 16px 0 28px; }
+      .hero { min-height: 50dvh; padding-bottom: 32px; }
+      .bottom { margin-top: 24px; padding: 24px 0 28px; border-top: none; }
     }
   </style>
 </head>
@@ -649,9 +220,9 @@
   <div class="app">
 
     <div class="top">
-      <div><b>Scam Spotter</b><span>Paste a suspicious message</span></div>
+      <div><b>Scam Spotter</b><span data-i18n="topHint"></span></div>
       <div class="topright">
-        <button class="linkbtn" onclick="openPlans()">For Institutions</button>
+        <button class="linkbtn" onclick="openPlans()" data-i18n="forInst"></button>
         <select id="lang" onchange="changeLang()">
           <option value="en">English</option>
           <option value="hi">हिन्दी</option>
@@ -662,7 +233,7 @@
     <div class="stage" id="stage">
       <div class="hero" id="hero">
         <h1 id="welcome" aria-label="Welcome to Scam Spotter"></h1>
-        <p class="tagline">Paste a suspicious message. See the warning signs.</p>
+        <p class="tagline" data-i18n="tagline"></p>
       </div>
 
       <div id="results">
@@ -710,82 +281,78 @@
 
     <div class="bottom">
       <div class="inputrow">
-        <textarea id="msg" rows="2" placeholder="Paste a suspicious message here..."></textarea>
-        <button class="primary" onclick="analyze()">Analyze</button>
-        <button onclick="clearAll()">Clear</button>
+        <textarea id="msg" rows="2" data-i18n-ph="placeholder"></textarea>
+        <button class="primary" onclick="analyze()" data-i18n="analyze"></button>
+        <button onclick="clearAll()" data-i18n="clear"></button>
       </div>
       <div class="samples">
-        <span>Try a sample:</span>
-        <button onclick="loadSample(0)">SBI KYC scam</button>
-        <button onclick="loadSample(1)">Real OTP notice</button>
-        <button onclick="loadSample(2)">Delivery update</button>
+        <span data-i18n="sample"></span>
+        <button onclick="loadSample(0)" data-i18n="s1"></button>
+        <button onclick="loadSample(1)" data-i18n="s2"></button>
+        <button onclick="loadSample(2)" data-i18n="s3"></button>
       </div>
-      <p class="note">Rule-based checker, not a guarantee. If you have been scammed, call 1930 or visit
-        cybercrime.gov.in (India).</p>
+      <p class="note" data-i18n="note"></p>
     </div>
 
   </div>
   <div id="plans" class="overlay" onclick="closePlans()">
     <div class="panel" onclick="event.stopPropagation()">
       <button class="closebtn" onclick="closePlans()">✕</button>
-      <h2>Scam Spotter for Institutions</h2>
-      <p class="lead"><b>Free for individuals.</b> Colleges, banks and NGOs pay a yearly license to protect their
-        people.</p>
+      <h2 data-i18n="instTitle"></h2>
+      <p class="lead" data-i18n="instLead"></p>
 
       <div class="plangrid">
         <div class="plan">
-          <h4>Campus Plan</h4>
-          <p class="price">about ₹20,000 / year</p>
-          <p>For colleges. Your branding, custom rules for fake fee, scholarship and internship scams, and a
-            scam-trend
-            dashboard.</p>
+          <h4 data-i18n="campusName"></h4>
+          <p class="price" data-i18n="campusPrice"></p>
+          <p data-i18n="campusDesc"></p>
         </div>
         <div class="plan">
-          <h4>Bank Plan</h4>
-          <p class="price">per customer base</p>
-          <p>For banks and cooperatives. An embedded widget, brand rules such as "Our bank never asks for an
-            OTP", and
-            regional languages.</p>
+          <h4 data-i18n="bankName"></h4>
+          <p class="price" data-i18n="bankPrice"></p>
+          <p data-i18n="bankDesc"></p>
         </div>
         <div class="plan">
-          <h4>Community Plan</h4>
-          <p class="price">discounted</p>
-          <p>For NGOs and local bodies. Regional language packs to protect elders and rural families.</p>
+          <h4 data-i18n="commName"></h4>
+          <p class="price" data-i18n="commPrice"></p>
+          <p data-i18n="commDesc"></p>
         </div>
       </div>
 
-      <p><b>Why they pay:</b> one fraud case costs a bank more in refunds, complaints and lost trust than a yearly
-        license.</p>
-      <p><b>Go-to-market:</b> 5 local colleges, then cooperative banks, then NGOs.</p>
-      <p class="fine">Prices are illustrative. This is a preview of the institution offering, not a checkout.</p>
+      <p data-i18n="why"></p>
+      <p data-i18n="gtm"></p>
+      <p class="fine" data-i18n="fine"></p>
     </div>
   </div>
 
   <script>
-    //  Pop-in heading 
+    // playHero now reads the heading from ui[lang].welcome, so it works in English and Hindi
     function playHero() {
+      const lang = getLang(); // find which language is selected
       const heading = document.getElementById('welcome');
       heading.innerHTML = '';
-      const words = 'Welcome to Scam Spotter'.split(' ');
+      heading.setAttribute('aria-label', ui[lang].welcome); //screen readers get the right language
+      const words = ui[lang].welcome.split(' '); //  was the fixed English sentence
       let count = 0;
       words.forEach(function (word) {
         const wordSpan = document.createElement('span');
         wordSpan.className = 'word';
-        word.split('').forEach(function (letter) {
+        // Hindi is animated word by word, because splitting Devanagari into letters breaks the vowel marks
+        const pieces = (lang === 'hi') ? [word] : word.split('');
+        pieces.forEach(function (piece) {
           const span = document.createElement('span');
           span.className = 'letter';
-          span.textContent = letter;
+          span.textContent = piece;
           span.style.animationDelay = (count * 0.06) + 's';
           wordSpan.appendChild(span);
           count++;
         });
 
-
         heading.appendChild(wordSpan);
         heading.appendChild(document.createTextNode(' '));
       });
     }
-    playHero();
+    //  the early playHero() call was removed from here. It now runs at the bottom, after ui exists.
 
     //  Words for the screen, in two languages 
     const ui = {
@@ -807,7 +374,36 @@
         noneTable: 'No warning signs found.',
         noneStep: 'No warning signs found. If you are still unsure, check with the sender through their official website or app.',
         extraStep: 'If you already shared an OTP or paid, contact your bank straight away. Report scams at cybercrime.gov.in or call 1930 (India).',
-        noVoice: ''
+        noVoice: '',
+        // every other piece of screen text, so nothing stays English-only
+        welcome: 'Welcome to Scam Spotter',
+        tagline: 'Paste a suspicious message. See the warning signs.',
+        topHint: 'Paste a suspicious message',
+        forInst: 'For Institutions',
+        placeholder: 'Paste a suspicious message here...',
+        analyze: 'Analyze',
+        clear: 'Clear',
+        sample: 'Try a sample:',
+        s1: 'SBI KYC scam',
+        s2: 'Real OTP notice',
+        s3: 'Delivery update',
+        note: 'Rule-based checker, not a guarantee. If you have been scammed, call 1930 or visit cybercrime.gov.in (India).',
+        emptyAlert: 'Please paste a message first.',
+        noAudio: 'Audio is not supported in this browser.',
+        instTitle: 'Scam Spotter for Institutions',
+        instLead: '<b>Free for individuals.</b> Colleges, banks and NGOs pay a yearly license to protect their people.',
+        campusName: 'Campus Plan',
+        campusPrice: 'about ₹20,000 / year',
+        campusDesc: 'For colleges. Your branding, custom rules for fake fee, scholarship and internship scams, and a scam-trend dashboard.',
+        bankName: 'Bank Plan',
+        bankPrice: 'per customer base',
+        bankDesc: 'For banks and cooperatives. An embedded widget, brand rules such as "Our bank never asks for an OTP", and regional languages.',
+        commName: 'Community Plan',
+        commPrice: 'discounted',
+        commDesc: 'For NGOs and local bodies. Regional language packs to protect elders and rural families.',
+        why: '<b>Why they pay:</b> one fraud case costs a bank more in refunds, complaints and lost trust than a yearly license.',
+        gtm: '<b>Go-to-market:</b> 5 local colleges, then cooperative banks, then NGOs.',
+        fine: 'Prices are illustrative. This is a preview of the institution offering, not a checkout.'
       },
       hi: {
         msgTitle: 'आपका संदेश, चेतावनी संकेतों के साथ',
@@ -827,7 +423,36 @@
         noneTable: 'कोई चेतावनी संकेत नहीं मिला।',
         noneStep: 'कोई चेतावनी संकेत नहीं मिला। फिर भी शक हो तो भेजने वाले से उनकी आधिकारिक वेबसाइट या ऐप के ज़रिए पुष्टि करें।',
         extraStep: 'अगर आपने OTP साझा कर दिया है या पैसे भेज दिए हैं, तो तुरंत अपने बैंक से संपर्क करें। ठगी की शिकायत cybercrime.gov.in पर करें या 1930 पर कॉल करें (भारत)।',
-        noVoice: 'इस डिवाइस पर हिंदी आवाज़ उपलब्ध नहीं है। कृपया टेक्स्ट पढ़ें।'
+        noVoice: 'इस डिवाइस पर हिंदी आवाज़ उपलब्ध नहीं है। कृपया टेक्स्ट पढ़ें।',
+        //Hindi version of every extra piece of screen text
+        welcome: 'स्कैम स्पॉटर में आपका स्वागत है',
+        tagline: 'कोई संदिग्ध संदेश पेस्ट करें। चेतावनी संकेत देखें।',
+        topHint: 'संदिग्ध संदेश पेस्ट करें',
+        forInst: 'संस्थानों के लिए',
+        placeholder: 'यहाँ संदिग्ध संदेश पेस्ट करें...',
+        analyze: 'जाँचें',
+        clear: 'साफ़ करें',
+        sample: 'नमूना आज़माएं:',
+        s1: 'SBI KYC ठगी',
+        s2: 'असली OTP सूचना',
+        s3: 'डिलीवरी अपडेट',
+        note: 'यह नियम-आधारित जाँच है, गारंटी नहीं। अगर आप ठगी का शिकार हुए हैं, तो 1930 पर कॉल करें या cybercrime.gov.in पर जाएं (भारत)।',
+        emptyAlert: 'कृपया पहले कोई संदेश पेस्ट करें।',
+        noAudio: 'इस ब्राउज़र में ऑडियो उपलब्ध नहीं है।',
+        instTitle: 'संस्थानों के लिए स्कैम स्पॉटर',
+        instLead: '<b>व्यक्तियों के लिए मुफ़्त।</b> कॉलेज, बैंक और NGO अपने लोगों की सुरक्षा के लिए सालाना लाइसेंस देते हैं।',
+        campusName: 'कैंपस प्लान',
+        campusPrice: 'लगभग ₹20,000 / वर्ष',
+        campusDesc: 'कॉलेजों के लिए। आपकी ब्रांडिंग, फर्जी फीस, छात्रवृत्ति और इंटर्नशिप ठगी के लिए कस्टम नियम, और ठगी-ट्रेंड डैशबोर्ड।',
+        bankName: 'बैंक प्लान',
+        bankPrice: 'ग्राहक संख्या के अनुसार',
+        bankDesc: 'बैंकों और सहकारी संस्थाओं के लिए। एम्बेडेड विजेट, "हमारा बैंक कभी OTP नहीं मांगता" जैसे ब्रांड नियम, और क्षेत्रीय भाषाएँ।',
+        commName: 'कम्युनिटी प्लान',
+        commPrice: 'रियायती',
+        commDesc: 'NGO और स्थानीय निकायों के लिए। बुज़ुर्गों और ग्रामीण परिवारों की सुरक्षा के लिए क्षेत्रीय भाषा पैक।',
+        why: '<b>वे क्यों भुगतान करते हैं:</b> एक ठगी का मामला बैंक को रिफ़ंड, शिकायतों और भरोसे के नुकसान में सालाना लाइसेंस से ज़्यादा पड़ता है।',
+        gtm: '<b>शुरुआत की योजना:</b> 5 स्थानीय कॉलेज, फिर सहकारी बैंक, फिर NGO।',
+        fine: 'कीमतें उदाहरण मात्र हैं। यह संस्थागत पेशकश का पूर्वावलोकन है, चेकआउट नहीं।'
       }
     };
 
@@ -977,15 +602,23 @@
       }
     ];
 
-    //  Samples
-    const samples = [
-      'SBI ALERT: Your KYC is incomplete and your account will be blocked today. Update immediately at http://sbi-kyc-update.example/verify and share the OTP you receive to confirm.',
-      'Your OTP is 4821. Do not share it with anyone.',
-      'Your order #1234 has been shipped and will arrive tomorrow. Track it in the official app.'
-    ];
+    // samples are now split by language (en / hi) instead of one list
+    const samples = {
+      en: [
+        'SBI ALERT: Your KYC is incomplete and your account will be blocked today. Update immediately at http://sbi-kyc-update.example/verify and share the OTP you receive to confirm.',
+        'Your OTP is 4821. Do not share it with anyone.',
+        'Your order #1234 has been shipped and will arrive tomorrow. Track it in the official app.'
+      ],
+      // Hindi samples. They trigger the same rules, and the last two stay Low risk
+      hi: [
+        'SBI अलर्ट: आपका खाता बंद हो जाएगा। तुरंत http://sbi-kyc-update.example/verify पर अपडेट करें और ओटीपी भेजो।',
+        'आपका OTP 4821 है। इसे किसी के साथ साझा न करें।',
+        'आपका ऑर्डर #1234 भेज दिया गया है और कल पहुंचेगा। आधिकारिक ऐप में ट्रैक करें।'
+      ]
+    };
 
     function loadSample(n) {
-      document.getElementById('msg').value = samples[n];
+      document.getElementById('msg').value = samples[getLang()][n]; // CHANGED: picks the sample in the selected language
       analyze();
     }
 
@@ -1004,20 +637,29 @@
       return document.getElementById('lang').value;
     }
 
-    // Writes the screen words in the chosen language
+    //  applyUi now also fills placeholders, allows bold text (innerHTML), and sets the typing language
     function applyUi() {
-      const t = ui[getLang()];
+      const lang = getLang();
+      const t = ui[lang];
       document.querySelectorAll('[data-i18n]').forEach(function (el) {
-        el.textContent = t[el.getAttribute('data-i18n')];
+        el.innerHTML = t[el.getAttribute('data-i18n')]; // CHANGED: innerHTML so <b> tags in the Institutions text work
       });
-      document.documentElement.lang = getLang();
+      //  fill the textarea placeholder in the chosen language
+      document.querySelectorAll('[data-i18n-ph]').forEach(function (el) {
+        el.placeholder = t[el.getAttribute('data-i18n-ph')];
+      });
+      document.getElementById('msg').lang = lang; //  tells the phone keyboard which language the box is for
+      document.documentElement.lang = lang;
     }
 
+    // when there is no result yet, replay the heading in the new language
     function changeLang() {
       stopSpeak();
       applyUi();
       if (hasResult) {
         showExplanation();
+      } else {
+        playHero(); //  show the heading in the newly chosen language
       }
     }
 
@@ -1037,7 +679,6 @@
       let rows = '';
       let html = '';
       let stepsHtml = '';
-
       lastFound.forEach(function (item) {
         const words = item.words.map(function (w) {
           return '<mark style="background:' + item.color + '">' + makeSafe(w) + '</mark>';
@@ -1045,17 +686,11 @@
 
         rows += '<tr>' +
           '<td>' + item.rule.name[lang] + '</td>' +
-          '<td>' + words + '</td>' +
+          '<td data-label="' + t.thFound + '">' + words + '</td>' +
           '<td>' + item.rule.why[lang] + '</td>' +
-          '<td>' + t.riskLabels[item.risk] + '</td>' +
-          '<td>+' + item.rule.points + '</td>' +
-          '</tr>'; rows += '<tr>' +
-            '<td>' + item.rule.name[lang] + '</td>' +
-            '<td data-label="' + t.thFound + '">' + words + '</td>' +
-            '<td>' + item.rule.why[lang] + '</td>' +
-            '<td data-label="' + t.thRisk + '">' + t.riskLabels[item.risk] + '</td>' +
-            '<td data-label="' + t.thPoints + '">+' + item.rule.points + '</td>' +
-            '</tr>';
+          '<td data-label="' + t.thRisk + '">' + t.riskLabels[item.risk] + '</td>' +
+          '<td data-label="' + t.thPoints + '">+' + item.rule.points + '</td>' +
+          '</tr>';
 
         html += '<p><b>' + item.rule.name[lang] + '</b> (+' + item.rule.points + ')<br>' + item.rule.why[lang] + '</p>';
         stepsHtml += '<li>' + item.rule.step[lang] + '</li>';
@@ -1101,7 +736,7 @@
 
     function speak() {
       if (!('speechSynthesis' in window)) {
-        alert('Audio is not supported in this browser.');
+        alert(ui[getLang()].noAudio); //  the message now follows the selected language
         return;
       }
       if (!hasResult) { return; }
@@ -1147,7 +782,7 @@
     function analyze() {
       const text = document.getElementById('msg').value;
       if (text.trim() === '') {
-        alert('Please paste a message first.');
+        alert(ui[getLang()].emptyAlert); //  the message now follows the selected language
         return;
       }
 
@@ -1239,7 +874,7 @@
     }
 
     applyUi();
-
+    playHero();
     // Press Enter to analyze (Shift + Enter for a new line)
     document.getElementById('msg').addEventListener('keydown', function (e) {
       if (e.key === 'Enter' && !e.shiftKey) {
