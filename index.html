@@ -405,8 +405,7 @@ const ui = {
 //  Rules (each rule has English and Hindi words) 
 const rules = [
   {
-    name: { en: 'Fake Urgency', hi: 'झूठी जल्दबाज़ी' },
-    pattern: /today|urgent|immediate|asap|within 24 hours|emergency|act now|right now|right away|turant|foran|jaldi|aaj hi|तुरंत|फौरन|आज ही/i,
+    name: { en: 'Fake Urgency', hi: 'झूठी जल्दबाज़ी' },    pattern: /by today|expires? today|blocked today|today only|before today|urgent|immediate|asap|within 24 hours|emergency|act now|right now|right away|turant|foran|jaldi|aaj hi|तुरंत|फौरन|आज ही/i,
     points: 20,
     why: {
       en: 'Pressure can make people act without thinking.',
@@ -533,12 +532,25 @@ const rules = [
       en: 'Do not send any money.',
       hi: 'कोई पैसा न भेजें।'
     }
+  },
+    {
+    name: { en: 'Prize or lottery claim', hi: 'इनाम या लॉटरी का दावा' },
+    pattern: /you\s+(have\s+)?won\b(?!['’]t)|you\s+are\s+(a\s+)?winner|congratulations.{0,40}(won|prize|lottery)|lucky\s+draw|lottery|claim\s+(your\s+)?(prize|reward|gift)|prize\s+money|inaam|jeet\s+gaye|इनाम|लॉटरी|जीत\s+गए/i,
+    points: 30,
+    why: {
+      en: 'Scammers say you won a prize so that you pay a "fee" or share your details. You cannot win a contest you never entered.',
+      hi: 'ठग इनाम का लालच देकर "फीस" मांगते हैं या आपकी जानकारी लेते हैं। जिस प्रतियोगिता में आपने हिस्सा ही नहीं लिया, उसमें आप जीत नहीं सकते।'
+    },
+    step: {
+      en: 'Do not pay any fee and do not share your details to claim a prize.',
+      hi: 'इनाम पाने के लिए कोई फीस न दें और अपनी जानकारी साझा न करें।'
+    }
   }
 ];
 
 //  Samples
 const samples = [
-  'SBI ALERT: Your KYC is incomplete and your account will be blocked today. Update immediately at http://sbi-kyc-update.example/verify and share the OTP you receive.',
+  'SBI ALERT: Your KYC is incomplete and your account will be blocked today. Update immediately at http://sbi-kyc-update.example/verify and share the OTP you receive to confirm.',
   'Your OTP is 4821. Do not share it with anyone.',
   'Your order #1234 has been shipped and will arrive tomorrow. Track it in the official app.'
 ];
@@ -555,6 +567,7 @@ function makeSafe(text) {
 //  Memory: what the last Analyze found 
 let lastFound = [];
 let lastScore = 0;
+let lastRaw = 0;
 let lastLevel = 'low';
 let hasResult = false;
 
@@ -585,7 +598,11 @@ function showExplanation() {
   const t = ui[lang];
 
   const banner = document.getElementById('banner');
-  banner.textContent = lastScore + ' / 100 = ' + t.levels[lastLevel] + ' ' + t.riskWord;
+    let note = '';
+  if (lastRaw > 100) {
+    note = (lang === 'hi') ? ' (कुल ' + lastRaw + ', अधिकतम 100)' : ' (total ' + lastRaw + ', capped at 100)';
+  }
+  banner.textContent = lastScore + ' / 100 = ' + t.levels[lastLevel] + ' ' + t.riskWord + note;
   banner.className = 'banner ' + lastLevel;
 
   let rows = '';
@@ -755,7 +772,7 @@ function analyze() {
     pos = r.end;
   });
   marked += makeSafe(text.slice(pos));
-
+  lastRaw = score;
   if (score > 100) { score = 100; }
 
   let level = 'low';

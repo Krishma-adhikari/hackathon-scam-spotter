@@ -2,7 +2,7 @@
 
 A free, rule-based scam checker that explains risk in the user's language, in text and audio.
 
-**Live demo:** https://YOUR-USERNAME.github.io/YOUR-REPO-NAME/
+**Live demo:** https://krishma-adhikari.github.io/hackathon-spam-spotter/
 
 Built for SETU 2026 (Forge Realm), Problem Statement PS-01: Scam Spotter.
 
