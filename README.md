@@ -8,11 +8,6 @@ A free, rule-based scam checker that explains risk in the user's language, in te
 
 Built for SETU 2026 (Forge Realm), Problem Statement PS-01.
 
-<!-- Add screenshots here after you save them in a /screenshots folder, for example:
-![High risk result](screenshots/high-risk.png)
-![Real OTP notice stays Low](screenshots/low-risk.png)
-![Hindi view on a phone](screenshots/hindi-mobile.png)
--->
 
 ## The problem
 
